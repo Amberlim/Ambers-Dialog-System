@@ -1,0 +1,203 @@
+[gd_scene load_steps=17 format=3 uid="uid://bgoyx13rwbdrg"]
+
+[ext_resource type="Script" path="res://DialogNode.gd" id="1_nbcqg"]
+[ext_resource type="Texture2D" uid="uid://br3moe3r4b2jh" path="res://Assets/UI/MenuIcon.svg" id="2_0ndlm"]
+[ext_resource type="FontFile" uid="uid://cr7irh45ojvhq" path="res://Assets/Fonts/RobotoMono-VariableFont_wght.ttf" id="2_msip0"]
+[ext_resource type="AudioStream" uid="uid://bpuuj0excj3p7" path="res://Assets/Sound/Type2.wav" id="3_m8kop"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dcwaw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dnm7a"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b7gbf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_reyql"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pcpki"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d5cie"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x51kv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mcfpy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h0v5b"]
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_u2m6e"]
+number_color = Color(0.368627, 0.815686, 0, 1)
+symbol_color = Color(0.898039, 0.917647, 0.917647, 1)
+function_color = Color(0.368627, 0.815686, 0, 1)
+keyword_colors = {
+"else if": Color(0.85098, 0.403922, 0.917647, 1),
+"is behind us": Color(0.560784, 0.156863, 1, 1),
+"no more what ifs": Color(0.85098, 0.403922, 0.917647, 1),
+"or else": Color(0.85098, 0.403922, 0.917647, 1)
+}
+color_regions = {
+"//": Color(1, 1, 1, 0.423529)
+}
+
+[sub_resource type="Animation" id="Animation_r4wbw"]
+resource_name = "MenuPeekOut"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect/VBoxContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.6),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect/VBoxContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector2(-42, 52), Vector2(19, 52)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ColorRect/Menu:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Color(1, 1, 1, 0.521569), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5ojth"]
+_data = {
+"MenuPeekOut": SubResource("Animation_r4wbw")
+}
+
+[node name="DialogEditor" type="Node2D" node_paths=PackedStringArray("text_edit", "audio_stream", "navigation", "anim")]
+script = ExtResource("1_nbcqg")
+text_edit = NodePath("TextEdit")
+audio_stream = NodePath("TypeSound")
+navigation = NodePath("ColorRect/VBoxContainer")
+anim = NodePath("AnimationPlayer")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.0431373, 0.117647, 0.164706, 1)
+
+[node name="Menu" type="Button" parent="ColorRect"]
+modulate = Color(1, 1, 1, 0.521569)
+layout_mode = 1
+offset_left = 14.0
+offset_top = 15.0
+offset_right = 40.0
+offset_bottom = 37.0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_dcwaw")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_dnm7a")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_b7gbf")
+toggle_mode = true
+icon = ExtResource("2_0ndlm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+offset_left = -42.0
+offset_top = 52.0
+offset_right = 5.0
+offset_bottom = 160.0
+
+[node name="New" type="Button" parent="ColorRect/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.635294, 0.635294, 0.635294, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_msip0")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_reyql")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_pcpki")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_d5cie")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_x51kv")
+text = "New"
+alignment = 0
+
+[node name="Open" type="Button" parent="ColorRect/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.635294, 0.635294, 0.635294, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_msip0")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_reyql")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_pcpki")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_d5cie")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_x51kv")
+text = "Open"
+alignment = 0
+
+[node name="Save" type="Button" parent="ColorRect/VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.635294, 0.635294, 0.635294, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_msip0")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_reyql")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_mcfpy")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_d5cie")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_x51kv")
+text = "Save"
+alignment = 0
+
+[node name="TextEdit" type="CodeEdit" parent="."]
+offset_left = 570.0
+offset_top = 80.0
+offset_right = 1350.0
+offset_bottom = 999.0
+theme_override_colors/background_color = Color(0.0431373, 0.117647, 0.164706, 1)
+theme_override_colors/font_color = Color(0.898039, 0.917647, 0.917647, 1)
+theme_override_colors/selection_color = Color(0, 0.713726, 1, 0.74902)
+theme_override_fonts/font = ExtResource("2_msip0")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/focus = SubResource("StyleBoxEmpty_h0v5b")
+text = "QSDFASKDJFNAJSDNFJA
+kdjsdbfhbbs
+asdjhfba"
+wrap_mode = 1
+draw_tabs = true
+syntax_highlighter = SubResource("CodeHighlighter_u2m6e")
+scroll_fit_content_height = true
+caret_blink = true
+line_folding = true
+gutters_draw_line_numbers = true
+indent_automatic = true
+indent_automatic_prefixes = Array[String]([":", "{", "[", "<", ">"])
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+auto_brace_completion_pairs = {
+"\"": "\"",
+"'": "'",
+"(": ")",
+"<<": ">>",
+"[": "]",
+"{": "}"
+}
+
+[node name="TypeSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_m8kop")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_5ojth")
+}
+
+[connection signal="toggled" from="ColorRect/Menu" to="." method="_on_menu_toggled"]
+[connection signal="pressed" from="ColorRect/VBoxContainer/New" to="." method="_on_new_pressed"]
+[connection signal="pressed" from="ColorRect/VBoxContainer/Open" to="." method="_on_open_pressed"]
+[connection signal="pressed" from="ColorRect/VBoxContainer/Save" to="." method="_on_save_pressed"]
+[connection signal="text_changed" from="TextEdit" to="." method="_on_text_edit_text_changed"]
