@@ -12,6 +12,7 @@ offset_bottom = 1080.0
 theme = SubResource("Theme_yr3bl")
 
 [node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 metadata/_edit_lock_ = true

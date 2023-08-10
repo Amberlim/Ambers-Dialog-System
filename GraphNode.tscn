@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://dae5airjwff28"]
+
+[ext_resource type="FontFile" uid="uid://cr7irh45ojvhq" path="res://Assets/Fonts/RobotoMono-VariableFont_wght.ttf" id="1_c0kvf"]
+[ext_resource type="PackedScene" uid="uid://du8buwy48dvor" path="res://CodeEdit.tscn" id="2_53o6y"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_334gs"]
+content_margin_left = 30.0
+content_margin_top = 30.0
+content_margin_right = 30.0
+content_margin_bottom = 30.0
+bg_color = Color(0.0431373, 0.117647, 0.164706, 1)
+expand_margin_top = 10.0
+
+[sub_resource type="Theme" id="Theme_kh5qu"]
+default_font = ExtResource("1_c0kvf")
+default_font_size = 12
+GraphNode/colors/title_color = Color(0, 0.427451, 1, 1)
+GraphNode/styles/frame = SubResource("StyleBoxFlat_334gs")
+
+[node name="GraphNode" type="GraphNode"]
+custom_minimum_size = Vector2(200, 500)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1160.0
+offset_bottom = -520.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_kh5qu")
+title = "GramercyHeights"
+resizable = true
+draggable = false
+selectable = false
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+
+[node name="TextEdit" parent="." instance=ExtResource("2_53o6y")]
+custom_minimum_size = Vector2(700, 500)
+layout_mode = 2
+text = "<<else if"
+scroll_v_scroll_speed = 90.0

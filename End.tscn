@@ -1,0 +1,53 @@
+[gd_scene load_steps=5 format=3 uid="uid://wn71oggmityx"]
+
+[ext_resource type="FontFile" uid="uid://cr7irh45ojvhq" path="res://Assets/Fonts/RobotoMono-VariableFont_wght.ttf" id="1_qxpae"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_334gs"]
+content_margin_left = 30.0
+content_margin_top = 30.0
+content_margin_right = 30.0
+content_margin_bottom = 30.0
+bg_color = Color(0.0431373, 0.117647, 0.164706, 1)
+
+[sub_resource type="Theme" id="Theme_kh5qu"]
+default_font = ExtResource("1_qxpae")
+default_font_size = 12
+GraphNode/colors/title_color = Color(0, 0.427451, 1, 1)
+GraphNode/styles/frame = SubResource("StyleBoxFlat_334gs")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gsjwx"]
+content_margin_left = 30.0
+content_margin_top = 30.0
+content_margin_right = 30.0
+content_margin_bottom = 30.0
+bg_color = Color(0, 0.427451, 1, 1)
+
+[node name="GraphNode" type="GraphNode"]
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1619.0
+offset_bottom = -980.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_kh5qu")
+theme_override_styles/frame = SubResource("StyleBoxFlat_gsjwx")
+resizable = true
+draggable = false
+selectable = false
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "END"

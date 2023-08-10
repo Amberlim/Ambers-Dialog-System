@@ -1,21 +1,17 @@
-extends Node2D
+extends CodeEdit
 
 # Nodes
-@export var text_edit : CodeEdit
-@export var audio_stream : AudioStreamPlayer
-@export var navigation : VBoxContainer
-@export var anim : AnimationPlayer
+@onready var audio = $TypeSound
 
-# Elements
-var dialog_block = []
+# Variables
 var last_pitch = 1.0
 
+# Called when the node enters the scene tree for the first time.
 func _ready():
-	
-	var highlighter = text_edit.syntax_highlighter
+	var highlighter = syntax_highlighter
 	
 	var yellow_words = ["true", "false"]
-	var pink_words = ["wait", "terminate", "if", "else if", "or else", "no more what ifs"]
+	var pink_words = ["wait", "terminate", "if"]
 	var purple_words = ["is behind us"]
 	var blue_words = ["Chapter"]
 	
@@ -37,9 +33,28 @@ func _ready():
 	highlighter.add_color_region("%", " ", green_color)
 	highlighter.add_color_region("$", " ", green_color)
 
+
+
+func play_type_sounds():
+	randomize()
+	audio.pitch_scale = randf_range(0.9, 1.8)
+	audio.volume_db = randf_range(-6, 0.2)
+	
+	while abs(audio.pitch_scale - last_pitch) < 0.1:
+		randomize()
+		audio.pitch_scale = randf_range(0.8, 1.2)
+	
+	last_pitch = audio.pitch_scale
+	
+	audio.play(0.0)
+
+func _on_text_changed():
+	play_type_sounds()
+
+
 func check():
 	
-	dialog_block = text_edit.text.split("\n")
+	var dialog_block = text.split("\n")
 	
 	for text in dialog_block:
 		
@@ -80,39 +95,3 @@ func check():
 			if "backdrop" in text:
 				pass
 #		if "///" in text
-
-
-
-
-func play_type_sounds():
-	randomize()
-	audio_stream.pitch_scale = randf_range(0.9, 1.8)
-	audio_stream.volume_db = randf_range(-6, 0.2)
-	
-	while abs(audio_stream.pitch_scale - last_pitch) < 0.1:
-		randomize()
-		audio_stream.pitch_scale = randf_range(0.8, 1.2)
-	
-	last_pitch = audio_stream.pitch_scale
-	
-	audio_stream.play(0.0)
-	
-func _on_text_edit_text_changed():
-	play_type_sounds()
-
-func _on_menu_toggled(button_pressed):
-	navigation.visible = button_pressed
-	if button_pressed:
-		anim.play("MenuPeekOut")
-	else:
-		anim.play_backwards("MenuPeekOut")	
-
-
-func _on_new_pressed():
-	pass
-	
-func _on_open_pressed():
-	pass # Replace with function body.
-
-func _on_save_pressed():
-	pass

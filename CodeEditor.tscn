@@ -1,9 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://bgoyx13rwbdrg"]
+[gd_scene load_steps=15 format=3 uid="uid://bgoyx13rwbdrg"]
 
 [ext_resource type="Script" path="res://DialogNode.gd" id="1_nbcqg"]
 [ext_resource type="Texture2D" uid="uid://br3moe3r4b2jh" path="res://Assets/UI/MenuIcon.svg" id="2_0ndlm"]
 [ext_resource type="FontFile" uid="uid://cr7irh45ojvhq" path="res://Assets/Fonts/RobotoMono-VariableFont_wght.ttf" id="2_msip0"]
-[ext_resource type="AudioStream" uid="uid://bpuuj0excj3p7" path="res://Assets/Sound/Type2.wav" id="3_m8kop"]
+[ext_resource type="PackedScene" uid="uid://du8buwy48dvor" path="res://CodeEdit.tscn" id="4_fmp4b"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dcwaw"]
 
@@ -20,22 +20,6 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x51kv"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mcfpy"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h0v5b"]
-
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_u2m6e"]
-number_color = Color(0.368627, 0.815686, 0, 1)
-symbol_color = Color(0.898039, 0.917647, 0.917647, 1)
-function_color = Color(0.368627, 0.815686, 0, 1)
-keyword_colors = {
-"else if": Color(0.85098, 0.403922, 0.917647, 1),
-"is behind us": Color(0.560784, 0.156863, 1, 1),
-"no more what ifs": Color(0.85098, 0.403922, 0.917647, 1),
-"or else": Color(0.85098, 0.403922, 0.917647, 1)
-}
-color_regions = {
-"//": Color(1, 1, 1, 0.423529)
-}
 
 [sub_resource type="Animation" id="Animation_r4wbw"]
 resource_name = "MenuPeekOut"
@@ -81,10 +65,8 @@ _data = {
 "MenuPeekOut": SubResource("Animation_r4wbw")
 }
 
-[node name="DialogEditor" type="Node2D" node_paths=PackedStringArray("text_edit", "audio_stream", "navigation", "anim")]
+[node name="DialogEditor" type="Node2D" node_paths=PackedStringArray("navigation", "anim")]
 script = ExtResource("1_nbcqg")
-text_edit = NodePath("TextEdit")
-audio_stream = NodePath("TypeSound")
 navigation = NodePath("ColorRect/VBoxContainer")
 anim = NodePath("AnimationPlayer")
 
@@ -154,42 +136,8 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_x51kv")
 text = "Save"
 alignment = 0
 
-[node name="TextEdit" type="CodeEdit" parent="."]
-offset_left = 570.0
-offset_top = 80.0
-offset_right = 1350.0
-offset_bottom = 999.0
-theme_override_colors/background_color = Color(0.0431373, 0.117647, 0.164706, 1)
-theme_override_colors/font_color = Color(0.898039, 0.917647, 0.917647, 1)
-theme_override_colors/selection_color = Color(0, 0.713726, 1, 0.74902)
-theme_override_fonts/font = ExtResource("2_msip0")
-theme_override_font_sizes/font_size = 15
-theme_override_styles/focus = SubResource("StyleBoxEmpty_h0v5b")
-text = "QSDFASKDJFNAJSDNFJA
-kdjsdbfhbbs
-asdjhfba"
-wrap_mode = 1
-draw_tabs = true
-syntax_highlighter = SubResource("CodeHighlighter_u2m6e")
-scroll_fit_content_height = true
-caret_blink = true
-line_folding = true
-gutters_draw_line_numbers = true
-indent_automatic = true
-indent_automatic_prefixes = Array[String]([":", "{", "[", "<", ">"])
-auto_brace_completion_enabled = true
-auto_brace_completion_highlight_matching = true
-auto_brace_completion_pairs = {
-"\"": "\"",
-"'": "'",
-"(": ")",
-"<<": ">>",
-"[": "]",
-"{": "}"
-}
-
-[node name="TypeSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_m8kop")
+[node name="TextEdit" parent="." instance=ExtResource("4_fmp4b")]
+delimiter_strings = Array[String](["\" \"", "' '"])
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -200,4 +148,3 @@ libraries = {
 [connection signal="pressed" from="ColorRect/VBoxContainer/New" to="." method="_on_new_pressed"]
 [connection signal="pressed" from="ColorRect/VBoxContainer/Open" to="." method="_on_open_pressed"]
 [connection signal="pressed" from="ColorRect/VBoxContainer/Save" to="." method="_on_save_pressed"]
-[connection signal="text_changed" from="TextEdit" to="." method="_on_text_edit_text_changed"]

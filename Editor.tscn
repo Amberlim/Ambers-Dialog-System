@@ -1,0 +1,138 @@
+[gd_scene load_steps=13 format=3 uid="uid://cxp4cacjxxr8i"]
+
+[ext_resource type="Texture2D" uid="uid://br3moe3r4b2jh" path="res://Assets/UI/MenuIcon.svg" id="1_lq43a"]
+[ext_resource type="FontFile" uid="uid://cr7irh45ojvhq" path="res://Assets/Fonts/RobotoMono-VariableFont_wght.ttf" id="2_f5by8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xfelb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d76bs"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sblb7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cp424"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8dxas"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gda6u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lrg0u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1nqca"]
+
+[sub_resource type="Animation" id="Animation_r4wbw"]
+resource_name = "MenuPeekOut"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect/VBoxContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.6),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect/VBoxContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector2(-42, 52), Vector2(19, 52)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ColorRect/Menu:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Color(1, 1, 1, 0.521569), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5ojth"]
+_data = {
+"MenuPeekOut": SubResource("Animation_r4wbw")
+}
+
+[node name="GraphEdit" type="GraphEdit"]
+custom_minimum_size = Vector2(1920, 1080)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.0431373, 0.117647, 0.164706, 1)
+
+[node name="Menu" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0.521569)
+layout_mode = 1
+offset_left = 14.0
+offset_top = 53.0
+offset_right = 40.0
+offset_bottom = 75.0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_xfelb")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_d76bs")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sblb7")
+toggle_mode = true
+icon = ExtResource("1_lq43a")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+offset_left = -42.0
+offset_top = 90.0
+offset_right = 5.0
+offset_bottom = 198.0
+
+[node name="New" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.635294, 0.635294, 0.635294, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_f5by8")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_cp424")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8dxas")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_gda6u")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lrg0u")
+text = "New"
+alignment = 0
+
+[node name="Open" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.635294, 0.635294, 0.635294, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_f5by8")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_cp424")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_8dxas")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_gda6u")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lrg0u")
+text = "Open"
+alignment = 0
+
+[node name="Save" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.635294, 0.635294, 0.635294, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_f5by8")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_cp424")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_1nqca")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_gda6u")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lrg0u")
+text = "Save"
+alignment = 0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_5ojth")
+}
