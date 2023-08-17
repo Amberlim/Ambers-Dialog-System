@@ -11,14 +11,14 @@ func _ready():
 	var highlighter = syntax_highlighter
 	
 	var yellow_words = ["true", "false"]
-	var pink_words = ["wait", "terminate", "if"]
-	var purple_words = ["is behind us"]
-	var blue_words = ["Chapter"]
+	var pink_words = ["wait", "terminate", "if", "else", "no more what ifs", "or else"]
+	var purple_words = ["is behind us", "scream"]
+#	var blue_words = ["Chapter"]
 	
 	var yellow_color = Color(0.78823530673981, 0.61960786581039, 0)
 	var green_color = Color(0.36862745881081, 0.81568628549576, 0)
 	var pink_color = Color(0.85098040103912, 0.40392157435417, 0.91764706373215)
-	var purple_color = Color(0.56078433990479, 0.15686275064945, 1)
+	var purple_color = Color(0.69411766529083, 0.34509804844856, 1)
 	var blue_color = Color(0, 0.42745098471642, 1)
 	
 	for word in yellow_words:
@@ -27,8 +27,8 @@ func _ready():
 		highlighter.add_keyword_color(word, pink_color)
 	for word in purple_words:
 		highlighter.add_keyword_color(word, purple_color)
-	for word in blue_words:
-		highlighter.add_keyword_color(word, blue_color)
+#	for word in blue_words:
+#		highlighter.add_keyword_color(word, blue_color)
 		
 	highlighter.add_color_region("%", " ", green_color)
 	highlighter.add_color_region("$", " ", green_color)

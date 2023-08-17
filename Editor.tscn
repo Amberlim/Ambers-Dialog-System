@@ -1,7 +1,83 @@
-[gd_scene load_steps=13 format=3 uid="uid://cxp4cacjxxr8i"]
+[gd_scene load_steps=24 format=3 uid="uid://cxp4cacjxxr8i"]
 
 [ext_resource type="Texture2D" uid="uid://br3moe3r4b2jh" path="res://Assets/UI/MenuIcon.svg" id="1_lq43a"]
+[ext_resource type="Script" path="res://Editor.gd" id="1_tip6a"]
 [ext_resource type="FontFile" uid="uid://cr7irh45ojvhq" path="res://Assets/Fonts/RobotoMono-VariableFont_wght.ttf" id="2_f5by8"]
+[ext_resource type="PackedScene" uid="uid://62norqof178s" path="res://Start.tscn" id="4_b5fls"]
+[ext_resource type="PackedScene" uid="uid://dae5airjwff28" path="res://GraphNode.tscn" id="5_rrjs7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1hd0u"]
+bg_color = Color(0.682353, 0.592157, 0.384314, 0.14902)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.423529)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 4
+expand_margin_left = 9.0
+expand_margin_top = 1.0
+expand_margin_right = 11.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yi158"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.423529)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 4
+expand_margin_left = 9.0
+expand_margin_top = 1.0
+expand_margin_right = 11.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6binw"]
+bg_color = Color(0.0431373, 0.117647, 0.164706, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3qs4p"]
+content_margin_left = 10.0
+content_margin_right = 21.0
+bg_color = Color(0.0431373, 0.117647, 0.164706, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.384314, 0.384314, 0.384314, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ajq3g"]
+content_margin_left = 10.0
+content_margin_right = 21.0
+bg_color = Color(0.0431373, 0.117647, 0.164706, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wpk7v"]
+bg_color = Color(0.0431373, 0.117647, 0.164706, 1)
+
+[sub_resource type="Theme" id="Theme_uaomp"]
+default_font = ExtResource("2_f5by8")
+Button/styles/hover = SubResource("StyleBoxFlat_1hd0u")
+Button/styles/normal = SubResource("StyleBoxFlat_yi158")
+GraphEdit/styles/bg = SubResource("StyleBoxFlat_6binw")
+GraphNode/colors/title_color = Color(0.101961, 0.364706, 0.447059, 1)
+GraphNode/styles/frame = SubResource("StyleBoxFlat_3qs4p")
+GraphNode/styles/selected_frame = SubResource("StyleBoxFlat_ajq3g")
+TextEdit/styles/normal = SubResource("StyleBoxFlat_wpk7v")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xfelb"]
 
@@ -63,13 +139,17 @@ _data = {
 "MenuPeekOut": SubResource("Animation_r4wbw")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wr0lq"]
+bg_color = Color(0.682353, 0.592157, 0.384314, 1)
+corner_radius_top_left = 1000
+corner_radius_top_right = 1000
+corner_radius_bottom_right = 1000
+corner_radius_bottom_left = 1024
+
 [node name="GraphEdit" type="GraphEdit"]
 custom_minimum_size = Vector2(1920, 1080)
-
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_right = 1920.0
-offset_bottom = 1080.0
-color = Color(0.0431373, 0.117647, 0.164706, 1)
+theme = SubResource("Theme_uaomp")
+script = ExtResource("1_tip6a")
 
 [node name="Menu" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0.521569)
@@ -136,3 +216,61 @@ alignment = 0
 libraries = {
 "": SubResource("AnimationLibrary_5ojth")
 }
+
+[node name="Tool" type="HBoxContainer" parent="."]
+z_index = 100
+layout_mode = 0
+offset_left = 71.0
+offset_top = 56.0
+offset_right = 311.0
+offset_bottom = 96.0
+theme_override_constants/separation = 30
+
+[node name="NewNode" type="Button" parent="Tool"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "+ Node"
+
+[node name="EndNode" type="Button" parent="Tool"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "+ End"
+
+[node name="Start" parent="." instance=ExtResource("4_b5fls")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.082
+anchor_top = 0.471
+anchor_right = 0.14
+anchor_bottom = 0.567
+offset_left = 35.56
+offset_top = -11.18
+offset_right = 40.2
+offset_bottom = 0.139966
+grow_vertical = 2
+mouse_filter = 1
+mouse_default_cursor_shape = 6
+theme_override_styles/frame = SubResource("StyleBoxFlat_wr0lq")
+position_offset = Vector2(193, 497.5)
+
+[node name="Label" parent="Start" index="0"]
+size_flags_vertical = 6
+
+[node name="GraphNode" parent="." instance=ExtResource("5_rrjs7")]
+layout_mode = 1
+anchor_left = -0.028125
+anchor_top = -0.0518519
+anchor_right = -0.0203125
+anchor_bottom = -0.0518519
+offset_left = 470.0
+offset_top = 468.0
+offset_right = 862.0
+offset_bottom = 722.0
+mouse_filter = 1
+title = "gramercyheights"
+position_offset = Vector2(416, 412)
+
+[connection signal="pressed" from="Tool/NewNode" to="." method="_on_new_node_pressed"]
+[connection signal="pressed" from="Tool/EndNode" to="." method="_on_new_node_pressed"]
+
+[editable path="Start"]

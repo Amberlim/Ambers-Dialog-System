@@ -12,19 +12,18 @@ symbol_color = Color(0.898039, 0.917647, 0.917647, 1)
 function_color = Color(0.368627, 0.815686, 0, 1)
 keyword_colors = {
 "else if": Color(0.85098, 0.403922, 0.917647, 1),
-"is behind us": Color(0.560784, 0.156863, 1, 1),
+"is behind us": Color(0.694118, 0.345098, 1, 1),
 "no more what ifs": Color(0.85098, 0.403922, 0.917647, 1),
-"or else": Color(0.85098, 0.403922, 0.917647, 1)
+"or else": Color(0.85098, 0.403922, 0.917647, 1),
+"scream": Color(0.694118, 0.345098, 1, 1)
 }
 color_regions = {
 "//": Color(1, 1, 1, 0.423529)
 }
 
 [node name="TextEdit" type="CodeEdit"]
-offset_left = 570.0
-offset_top = 80.0
-offset_right = 1350.0
-offset_bottom = 999.0
+offset_right = 780.0
+offset_bottom = 919.0
 theme_override_colors/background_color = Color(0.0431373, 0.117647, 0.164706, 1)
 theme_override_colors/font_color = Color(0.898039, 0.917647, 0.917647, 1)
 theme_override_colors/selection_color = Color(0, 0.713726, 1, 0.74902)
