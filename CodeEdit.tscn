@@ -223,7 +223,6 @@ scroll_smooth = true
 caret_blink = true
 line_folding = true
 gutters_draw_line_numbers = true
-indent_automatic = true
 indent_automatic_prefixes = Array[String]([":", "{", "[", "<", ">"])
 auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true

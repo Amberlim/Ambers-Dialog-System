@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://dae5airjwff28"]
+[gd_scene load_steps=5 format=3 uid="uid://dae5airjwff28"]
 
 [ext_resource type="Script" path="res://GraphNode.gd" id="2_5cqbw"]
 [ext_resource type="PackedScene" uid="uid://du8buwy48dvor" path="res://CodeEdit.tscn" id="2_53o6y"]
+[ext_resource type="Texture2D" uid="uid://mrtuxxullwkh" path="res://Assets/UI/Divider.svg" id="2_okvfh"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_03hav"]
-content_margin_bottom = 20.0
 
 [node name="GraphNode" type="GraphNode"]
 anchors_preset = -1
@@ -12,6 +12,8 @@ anchor_right = 0.204
 anchor_bottom = 0.235
 offset_right = 0.319979
 offset_bottom = 0.199985
+mouse_default_cursor_shape = 6
+theme_override_constants/separation = 10
 title = "GramercyHeights"
 show_close = true
 resizable = true
@@ -36,21 +38,68 @@ slot/1/draw_stylebox = true
 script = ExtResource("2_5cqbw")
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Character" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/Character"]
+layout_mode = 2
+text = "Character"
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer/Character"]
+visible = false
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer/Character"]
+layout_mode = 2
+item_count = 3
+popup/item_0/text = "Mum"
+popup/item_0/id = 0
+popup/item_1/text = "Happy"
+popup/item_1/id = 1
+popup/item_2/text = "Uncle"
+popup/item_2/id = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Divider" type="TextureRect" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_okvfh")
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_03hav")
+text = "Text"
 
-[node name="TextEdit" parent="." instance=ExtResource("2_53o6y")]
+[node name="TextEdit" parent="VBoxContainer" instance=ExtResource("2_53o6y")]
 custom_minimum_size = Vector2(2.08165e-12, 200)
 layout_mode = 2
 size_flags_vertical = 3
+tooltip_text = "Press ENTER to break apart the dialog if you want 
+the same character to be talking but on a new line.
+The backend code will separate them with /n.
+
+Use <<$expression>> in text to change expression."
 theme_override_colors/background_color = Color(0, 0, 0, 0)
-text = "Mum: Go buy some tofu.
-<<emit signal happy>>
-Mum, sad: Go now."
+text = ""
+placeholder_text = "Character dialog goes here... 
+
+Use <<$expression_name>> to change expressions.
+
+Press ENTER to break dialog (if the character is still the same).
+
+"
 scroll_v_scroll_speed = 90.0
 scroll_fit_content_height = true
 
 [connection signal="close_request" from="." to="." method="_on_close_request"]
 [connection signal="resize_request" from="." to="." method="_on_resize_request"]
 [connection signal="slot_updated" from="." to="." method="_on_slot_updated"]
+[connection signal="item_selected" from="HBoxContainer/Character/OptionButton" to="." method="_on_option_button_item_selected"]

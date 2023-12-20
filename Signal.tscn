@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://k4wvbgfokuw8"]
+
+[ext_resource type="Script" path="res://FeatureLineEdits.gd" id="1_jx2vx"]
+[ext_resource type="Texture2D" uid="uid://djps6et7do5gr" path="res://Assets/UI/CancelIcon.svg" id="2_fhy51"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ca652"]
+
+[node name="Signal" type="HBoxContainer"]
+offset_right = 300.0
+offset_bottom = 37.0
+script = ExtResource("1_jx2vx")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+expand_to_text_length = true
+
+[node name="CheckButton" type="CheckButton" parent="."]
+layout_mode = 2
+
+[node name="CancelButton" type="Button" parent="."]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ca652")
+icon = ExtResource("2_fhy51")
+
+[connection signal="pressed" from="CancelButton" to="." method="_on_cancel_button_pressed"]

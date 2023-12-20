@@ -1,83 +1,13 @@
-[gd_scene load_steps=24 format=3 uid="uid://cxp4cacjxxr8i"]
+[gd_scene load_steps=23 format=3 uid="uid://cxp4cacjxxr8i"]
 
 [ext_resource type="Texture2D" uid="uid://br3moe3r4b2jh" path="res://Assets/UI/MenuIcon.svg" id="1_lq43a"]
+[ext_resource type="Theme" uid="uid://thbfepb48rke" path="res://Assets/UI/GeneralTheme.tres" id="1_ogbra"]
 [ext_resource type="Script" path="res://Editor.gd" id="1_tip6a"]
 [ext_resource type="FontFile" uid="uid://cr7irh45ojvhq" path="res://Assets/Fonts/RobotoMono-VariableFont_wght.ttf" id="2_f5by8"]
 [ext_resource type="PackedScene" uid="uid://62norqof178s" path="res://Start.tscn" id="4_b5fls"]
-[ext_resource type="PackedScene" uid="uid://dae5airjwff28" path="res://GraphNode.tscn" id="5_rrjs7"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1hd0u"]
-bg_color = Color(0.682353, 0.592157, 0.384314, 0.14902)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 0.423529)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 4
-expand_margin_left = 9.0
-expand_margin_top = 1.0
-expand_margin_right = 11.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yi158"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 0.423529)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 4
-expand_margin_left = 9.0
-expand_margin_top = 1.0
-expand_margin_right = 11.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6binw"]
-bg_color = Color(0.0431373, 0.117647, 0.164706, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3qs4p"]
-content_margin_left = 10.0
-content_margin_right = 21.0
-bg_color = Color(0.0431373, 0.117647, 0.164706, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.384314, 0.384314, 0.384314, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ajq3g"]
-content_margin_left = 10.0
-content_margin_right = 21.0
-bg_color = Color(0.0431373, 0.117647, 0.164706, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wpk7v"]
-bg_color = Color(0.0431373, 0.117647, 0.164706, 1)
-
-[sub_resource type="Theme" id="Theme_uaomp"]
-default_font = ExtResource("2_f5by8")
-Button/styles/hover = SubResource("StyleBoxFlat_1hd0u")
-Button/styles/normal = SubResource("StyleBoxFlat_yi158")
-GraphEdit/styles/bg = SubResource("StyleBoxFlat_6binw")
-GraphNode/colors/title_color = Color(0.101961, 0.364706, 0.447059, 1)
-GraphNode/styles/frame = SubResource("StyleBoxFlat_3qs4p")
-GraphNode/styles/selected_frame = SubResource("StyleBoxFlat_ajq3g")
-TextEdit/styles/normal = SubResource("StyleBoxFlat_wpk7v")
+[ext_resource type="Texture2D" uid="uid://djps6et7do5gr" path="res://Assets/UI/CancelIcon.svg" id="6_uvorx"]
+[ext_resource type="StyleBox" uid="uid://c4ae1uw3k6x40" path="res://Assets/UI/CircularButtonStyle.tres" id="7_siqoo"]
+[ext_resource type="Texture2D" uid="uid://mrtuxxullwkh" path="res://Assets/UI/Divider.svg" id="8_t2j1e"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xfelb"]
 
@@ -146,10 +76,57 @@ corner_radius_top_right = 1000
 corner_radius_bottom_right = 1000
 corner_radius_bottom_left = 1024
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_khc4p"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.541176, 0.541176, 0.541176, 0.313726)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 500
+corner_radius_top_right = 500
+corner_radius_bottom_right = 500
+corner_radius_bottom_left = 500
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n7c6c"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.541176, 0.541176, 0.541176, 0.313726)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 500
+corner_radius_top_right = 500
+corner_radius_bottom_right = 500
+corner_radius_bottom_left = 500
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xj0i7"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.541176, 0.541176, 0.541176, 0.313726)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 500
+corner_radius_top_right = 500
+corner_radius_bottom_right = 500
+corner_radius_bottom_left = 500
+
 [node name="GraphEdit" type="GraphEdit"]
 custom_minimum_size = Vector2(1920, 1080)
-theme = SubResource("Theme_uaomp")
+theme = ExtResource("1_ogbra")
 script = ExtResource("1_tip6a")
+metadata/_edit_vertical_guides_ = [962.0]
+metadata/_edit_horizontal_guides_ = [542.0]
 
 [node name="Menu" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0.521569)
@@ -231,6 +208,11 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "+ Node"
 
+[node name="NewFeature" type="Button" parent="Tool"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "+ Feature"
+
 [node name="EndNode" type="Button" parent="Tool"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
@@ -246,31 +228,202 @@ anchor_bottom = 0.567
 offset_left = 35.56
 offset_top = -11.18
 offset_right = 40.2
-offset_bottom = 0.139966
+offset_bottom = 0.14003
 grow_vertical = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 6
 theme_override_styles/frame = SubResource("StyleBoxFlat_wr0lq")
+theme_override_styles/selected_frame = SubResource("StyleBoxFlat_wr0lq")
 position_offset = Vector2(193, 497.5)
 
 [node name="Label" parent="Start" index="0"]
 size_flags_vertical = 6
 
-[node name="GraphNode" parent="." instance=ExtResource("5_rrjs7")]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -249.0
+offset_top = -240.0
+offset_right = 251.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SaveFileDialog" type="FileDialog" parent="CanvasLayer/Panel"]
+title = "Save File"
+initial_position = 2
+size = Vector2i(600, 700)
+min_size = Vector2i(600, 500)
+ok_button_text = "Save"
+access = 2
+filters = PackedStringArray("*.json")
+
+[node name="OpenFileDialog" type="FileDialog" parent="CanvasLayer/Panel"]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(600, 700)
+min_size = Vector2i(600, 500)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.json")
+
+[node name="MenuList" type="VBoxContainer" parent="CanvasLayer/Panel"]
 layout_mode = 1
-anchor_left = -0.028125
-anchor_top = -0.0518519
-anchor_right = -0.0203125
-anchor_bottom = -0.0518519
-offset_left = 470.0
-offset_top = 468.0
-offset_right = 862.0
-offset_bottom = 722.0
-mouse_filter = 1
-title = "gramercyheights"
-position_offset = Vector2(416, 412)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = -50.5
+offset_right = 39.5
+offset_bottom = 50.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="New" type="Button" parent="CanvasLayer/Panel/MenuList"]
+layout_mode = 2
+text = "NEW"
+
+[node name="Open" type="Button" parent="CanvasLayer/Panel/MenuList"]
+layout_mode = 2
+text = "OPEN"
+
+[node name="Save" type="Button" parent="CanvasLayer/Panel/MenuList"]
+layout_mode = 2
+text = "SAVE"
+
+[node name="SaveAs" type="Button" parent="CanvasLayer/Panel/MenuList"]
+layout_mode = 2
+text = "SAVE AS"
+
+[node name="Options" type="Button" parent="CanvasLayer/Panel/MenuList"]
+layout_mode = 2
+text = "OPTIONS"
+
+[node name="CancelButton" type="TextureButton" parent="CanvasLayer/Panel"]
+layout_mode = 0
+offset_left = 465.0
+offset_right = 505.0
+offset_bottom = 40.0
+texture_normal = ExtResource("6_uvorx")
+
+[node name="Options" type="VBoxContainer" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -110.0
+offset_top = -20.0
+offset_right = 110.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TypeSound" type="HBoxContainer" parent="CanvasLayer/Panel/Options"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/Options/TypeSound"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Type Sound"
+
+[node name="1" type="Button" parent="CanvasLayer/Panel/Options/TypeSound"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("7_siqoo")
+theme_override_styles/hover = SubResource("StyleBoxFlat_khc4p")
+theme_override_styles/focus = SubResource("StyleBoxFlat_khc4p")
+text = "1"
+
+[node name="2" type="Button" parent="CanvasLayer/Panel/Options/TypeSound"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("7_siqoo")
+theme_override_styles/hover = SubResource("StyleBoxFlat_n7c6c")
+theme_override_styles/focus = SubResource("StyleBoxFlat_khc4p")
+text = "2"
+
+[node name="3" type="Button" parent="CanvasLayer/Panel/Options/TypeSound"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("7_siqoo")
+theme_override_styles/hover = SubResource("StyleBoxFlat_xj0i7")
+theme_override_styles/focus = SubResource("StyleBoxFlat_khc4p")
+text = "3"
+
+[node name="FontSize" type="HBoxContainer" parent="CanvasLayer/Panel/Options"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel/Options/FontSize"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Font Size"
+
+[node name="S" type="Button" parent="CanvasLayer/Panel/Options/FontSize"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("7_siqoo")
+theme_override_styles/hover = SubResource("StyleBoxFlat_khc4p")
+theme_override_styles/focus = SubResource("StyleBoxFlat_khc4p")
+text = "S"
+
+[node name="M" type="Button" parent="CanvasLayer/Panel/Options/FontSize"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("7_siqoo")
+theme_override_styles/hover = SubResource("StyleBoxFlat_n7c6c")
+theme_override_styles/focus = SubResource("StyleBoxFlat_khc4p")
+text = "M"
+
+[node name="L" type="Button" parent="CanvasLayer/Panel/Options/FontSize"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = ExtResource("7_siqoo")
+theme_override_styles/hover = SubResource("StyleBoxFlat_xj0i7")
+theme_override_styles/focus = SubResource("StyleBoxFlat_khc4p")
+text = "L"
+
+[node name="Divider" type="TextureRect" parent="CanvasLayer/Panel/Options"]
+layout_mode = 2
+texture = ExtResource("8_t2j1e")
+
+[node name="Buttons" type="HBoxContainer" parent="CanvasLayer/Panel/Options"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Cancel" type="Button" parent="CanvasLayer/Panel/Options/Buttons"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_ogbra")
+text = "Cancel"
+
+[node name="Save" type="Button" parent="CanvasLayer/Panel/Options/Buttons"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("1_ogbra")
+text = "Save"
 
 [connection signal="pressed" from="Tool/NewNode" to="." method="_on_new_node_pressed"]
-[connection signal="pressed" from="Tool/EndNode" to="." method="_on_new_node_pressed"]
+[connection signal="pressed" from="Tool/NewFeature" to="." method="_on_new_feature_pressed"]
+[connection signal="pressed" from="Tool/EndNode" to="." method="_on_end_node_pressed"]
+[connection signal="confirmed" from="CanvasLayer/Panel/SaveFileDialog" to="." method="_on_save_file_dialog_confirmed"]
+[connection signal="file_selected" from="CanvasLayer/Panel/SaveFileDialog" to="." method="_on_save_file_dialog_file_selected"]
+[connection signal="confirmed" from="CanvasLayer/Panel/OpenFileDialog" to="." method="_on_open_file_dialog_confirmed"]
+[connection signal="pressed" from="CanvasLayer/Panel/MenuList/Open" to="." method="_on_open_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/MenuList/SaveAs" to="." method="_on_save_as_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/MenuList/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/Options/Buttons/Cancel" to="." method="_on_options_cancel_pressed"]
 
 [editable path="Start"]
