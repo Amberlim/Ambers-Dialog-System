@@ -6,7 +6,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_03hav"]
 
-[node name="GraphNode" type="GraphNode"]
+[node name="GraphNode" type="GraphNode" groups=["nodes"]]
 anchors_preset = -1
 anchor_right = 0.204
 anchor_bottom = 0.235
@@ -35,25 +35,34 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
 script = ExtResource("2_5cqbw")
 metadata/_edit_use_anchors_ = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="Character" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Character" type="VBoxContainer" parent="HBoxContainer"]
+[node name="Character" type="VBoxContainer" parent="Character"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="HBoxContainer/Character"]
+[node name="Label" type="Label" parent="Character/Character"]
 layout_mode = 2
 text = "Character"
 
-[node name="LineEdit" type="LineEdit" parent="HBoxContainer/Character"]
+[node name="LineEdit" type="LineEdit" parent="Character/Character"]
 visible = false
 layout_mode = 2
 
-[node name="OptionButton" type="OptionButton" parent="HBoxContainer/Character"]
+[node name="OptionButton" type="OptionButton" parent="Character/Character"]
 layout_mode = 2
 item_count = 3
 popup/item_0/text = "Mum"
@@ -63,22 +72,41 @@ popup/item_1/id = 1
 popup/item_2/text = "Uncle"
 popup/item_2/id = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="LineAsset" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Divider" type="TextureRect" parent="VBoxContainer"]
+[node name="Divider" type="TextureRect" parent="LineAsset"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("2_okvfh")
 stretch_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Line Asset" type="Label" parent="LineAsset"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_03hav")
+text = "Line Asset "
+
+[node name="LineEdit" type="LineEdit" parent="LineAsset"]
+layout_mode = 2
+placeholder_text = "optional"
+
+[node name="Text" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Divider" type="TextureRect" parent="Text"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_okvfh")
+stretch_mode = 2
+
+[node name="Label" type="Label" parent="Text"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_03hav")
 text = "Text"
 
-[node name="TextEdit" parent="VBoxContainer" instance=ExtResource("2_53o6y")]
+[node name="TextEdit" parent="Text" instance=ExtResource("2_53o6y")]
 custom_minimum_size = Vector2(2.08165e-12, 200)
 layout_mode = 2
 size_flags_vertical = 3
@@ -101,5 +129,4 @@ scroll_fit_content_height = true
 
 [connection signal="close_request" from="." to="." method="_on_close_request"]
 [connection signal="resize_request" from="." to="." method="_on_resize_request"]
-[connection signal="slot_updated" from="." to="." method="_on_slot_updated"]
-[connection signal="item_selected" from="HBoxContainer/Character/OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="item_selected" from="Character/Character/OptionButton" to="." method="_on_option_button_item_selected"]

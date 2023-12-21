@@ -1,13 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://r2fsp6nqqrig"]
+[gd_scene load_steps=10 format=3 uid="uid://r2fsp6nqqrig"]
 
 [ext_resource type="Script" path="res://Feature.gd" id="1_qesbp"]
 [ext_resource type="Texture2D" uid="uid://mrtuxxullwkh" path="res://Assets/UI/Divider.svg" id="2_ldgu0"]
 [ext_resource type="PackedScene" uid="uid://catj2016lndqq" path="res://Variable.tscn" id="4_bptyl"]
-[ext_resource type="PackedScene" uid="uid://k4wvbgfokuw8" path="res://Signal.tscn" id="5_dbebj"]
+[ext_resource type="Script" path="res://FeatureLineEdits.gd" id="4_xyw2x"]
+[ext_resource type="Texture2D" uid="uid://djps6et7do5gr" path="res://Assets/UI/CancelIcon.svg" id="5_rwoc7"]
 [ext_resource type="Texture2D" uid="uid://bb8p1rufyc135" path="res://Assets/UI/PlusIcon.svg" id="5_upf7y"]
 [ext_resource type="PackedScene" uid="uid://c2s5ab5peh3dh" path="res://Conditional.tscn" id="6_4v6s7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p5ccu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ca652"]
 
 [node name="Feature" type="GraphNode"]
 offset_left = 18.0
@@ -103,7 +106,7 @@ layout_mode = 2
 [node name="EmitSignalGroup" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Divider" type="TextureRect" parent="EmitSignalGroup"]
+[node name="Divider" type="TextureRect" parent="EmitSignalGroup" groups=["nodes"]]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -124,8 +127,20 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_p5ccu")
 icon = ExtResource("5_upf7y")
 
-[node name="Signal" parent="EmitSignalGroup" instance=ExtResource("5_dbebj")]
+[node name="Signal" type="HBoxContainer" parent="EmitSignalGroup"]
 layout_mode = 2
+script = ExtResource("4_xyw2x")
+
+[node name="LineEdit" type="LineEdit" parent="EmitSignalGroup/Signal"]
+layout_mode = 2
+size_flags_horizontal = 3
+expand_to_text_length = true
+
+[node name="CancelButton" type="Button" parent="EmitSignalGroup/Signal"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ca652")
+icon = ExtResource("5_rwoc7")
 
 [node name="ConditionalsGroup" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -161,8 +176,8 @@ layout_mode = 2
 [connection signal="item_selected" from="Feature/OptionButton" to="." method="_on_option_button_item_selected"]
 [connection signal="pressed" from="VariablesGroup/Title/AddVarButton" to="." method="_on_add_button_pressed" binds= ["variable"]]
 [connection signal="pressed" from="EmitSignalGroup/Title/AddSignalButton" to="." method="_on_add_button_pressed" binds= ["signal"]]
+[connection signal="pressed" from="EmitSignalGroup/Signal/CancelButton" to="EmitSignalGroup/Signal" method="_on_cancel_button_pressed" flags=18]
 [connection signal="pressed" from="ConditionalsGroup/Title/AddConditionalButton" to="." method="_on_add_button_pressed" binds= ["conditional"]]
 
 [editable path="VariablesGroup/Variable"]
-[editable path="EmitSignalGroup/Signal"]
 [editable path="ConditionalsGroup/Conditional"]

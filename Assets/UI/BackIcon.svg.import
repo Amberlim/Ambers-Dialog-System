@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://lr0xecvc18vj"
-path="res://.godot/imported/PortIcon.svg-63151c39d0ced42d86093f2ee95413b8.ctex"
+uid="uid://ctil58h4yjoph"
+path="res://.godot/imported/BackIcon.svg-e27fbee262a9dcdedee900dd96330776.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/UI/PortIcon.svg"
-dest_files=["res://.godot/imported/PortIcon.svg-63151c39d0ced42d86093f2ee95413b8.ctex"]
+source_file="res://Assets/UI/BackIcon.svg"
+dest_files=["res://.godot/imported/BackIcon.svg-e27fbee262a9dcdedee900dd96330776.ctex"]
 
 [params]
 

@@ -1,5 +1,7 @@
 extends GraphNode
 
+var node_type = "feature"
+
 # Signal
 signal _cancel_button_pressed(feature_type)
 
@@ -7,6 +9,43 @@ signal _cancel_button_pressed(feature_type)
 var variable_count : int = 0
 var signal_count : int = 0
 var conditional_count : int = 0
+
+# Data
+var node_data = {
+	"offset_x": 0,
+	"offset_y": 0,
+	"variables": {},
+	"signals": [],
+	"conditionals": {},
+	"node title": "",
+	"go to": []
+}
+
+func update_data():
+	node_data["offset_x"] = self.position_offset.x
+	node_data["offset_y"] = self.position_offset.y
+
+	if variable_count != 0:
+		for individual_variable in variables_group.get_children():
+			if "variable" in individual_variable.name:
+				var var_active = individual_variable.get_node("CheckButton").button_pressed 
+				var var_name = individual_variable.get_node("LineEdit").text 
+				
+				node_data["variables"][var_name] = var_active
+		
+	if signal_count != 0 :		
+		for individual_signal in emit_signal_group.get_children():	
+			if "signal"	in individual_signal.name:
+				var signal_name = individual_signal.get_node("line_edit").text
+				node_data["signals"].append(signal_name)
+
+	if conditional_count != 0:
+		for individual_conditional in conditionals_group.get_children():
+			if "conditional" in individual_conditional.name:
+				var condition_exists = individual_conditional.get_node("CheckButton").button_pressed 
+				var condition_name = individual_conditional.get_node("LineEdit").text 
+				
+				node_data["conditionals"][condition_name] = condition_exists
 
 # Nodes
 @onready var variables_group = $VariablesGroup

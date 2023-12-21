@@ -31,7 +31,7 @@ func _ready():
 ##		highlighter.add_keyword_color(word, blue_color)
 #
 #	highlighter.add_color_region("%", " ", green_color)
-	highlighter.add_color_region("<<", " ", pink_color)
+#	highlighter.add_color_region("<<", " ", pink_color)
 
 
 

@@ -1,5 +1,6 @@
 extends GraphNode
 
+var node_type = "node"
 
 var node_data = {
 	"offset_x": 0,
@@ -7,7 +8,8 @@ var node_data = {
 	"character": "",
 	"text": "",
 	"line asset": "",
-	"node title": ""
+	"node title": "",
+	"go to": []
 }
 
 func _on_close_request():
@@ -20,9 +22,10 @@ func _on_dragged(from, to):
 
 func _on_resize_request(new_minsize):
 	custom_minimum_size = new_minsize
-
-func _on_slot_updated(idx):
-	pass # Replace with function body.
-
+	
 func _on_option_button_item_selected(index):
-	pass # Replace with function body.
+	node_data["character"] = $Character/Character/OptionButton.get_item_text(index)
+
+func update_data():
+	node_data.text = $Text/TextEdit.text
+	node_data.line_asset = $LineAsset/LineEdit.text
