@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cxp4cacjxxr8i"]
+[gd_scene load_steps=30 format=3 uid="uid://cxp4cacjxxr8i"]
 
 [ext_resource type="Texture2D" uid="uid://br3moe3r4b2jh" path="res://Assets/UI/MenuIcon.svg" id="1_lq43a"]
 [ext_resource type="Theme" uid="uid://thbfepb48rke" path="res://Assets/UI/GeneralTheme.tres" id="1_ogbra"]
@@ -10,6 +10,7 @@
 [ext_resource type="StyleBox" uid="uid://c4ae1uw3k6x40" path="res://Assets/UI/CircularButtonStyle.tres" id="7_siqoo"]
 [ext_resource type="Texture2D" uid="uid://mrtuxxullwkh" path="res://Assets/UI/Divider.svg" id="8_t2j1e"]
 [ext_resource type="Script" path="res://FileDialog.gd" id="10_au6rp"]
+[ext_resource type="AudioStream" uid="uid://dmdl30ltmnjd5" path="res://Assets/Sound/Saved.wav" id="11_f7qac"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8behx"]
 
@@ -74,6 +75,44 @@ tracks/2/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5ojth"]
 _data = {
 "MenuPeekOut": SubResource("Animation_r4wbw")
+}
+
+[sub_resource type="Animation" id="Animation_foi4l"]
+resource_name = "FadeOut"
+length = 4.0
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.04, 1.94, 3.42),
+"transitions": PackedFloat32Array(-2, -2, -2, -2),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ndff8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ej5qk"]
+_data = {
+"FadeOut": SubResource("Animation_foi4l"),
+"RESET": SubResource("Animation_ndff8")
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wr0lq"]
@@ -221,10 +260,27 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "+ Feature"
 
+[node name="Option" type="Button" parent="Tool"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "+ Option"
+
 [node name="EndNode" type="Button" parent="Tool"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "+ End"
+
+[node name="SavedNotification" type="Label" parent="Tool"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.141176, 0.698039, 0.584314, 1)
+text = "SAVED!"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Tool/SavedNotification"]
+autoplay = "RESET"
+libraries = {
+"": SubResource("AnimationLibrary_ej5qk")
+}
 
 [node name="Start" parent="." instance=ExtResource("4_b5fls")]
 layout_mode = 1
@@ -264,6 +320,17 @@ offset_bottom = 260.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_ogbra")
+
+[node name="ColorRect3" type="ColorRect" parent="CanvasLayer/Panel"]
+layout_mode = 0
+offset_left = -711.0
+offset_top = -300.0
+offset_right = 1211.0
+offset_bottom = 783.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.0431373, 0.117647, 0.164706, 0.576471)
+metadata/_edit_lock_ = true
 
 [node name="MenuList" type="VBoxContainer" parent="CanvasLayer/Panel"]
 layout_mode = 1
@@ -438,18 +505,17 @@ mouse_default_cursor_shape = 2
 theme = ExtResource("1_ogbra")
 text = "Save"
 
-[node name="SaveFileDialog" type="Panel" parent="CanvasLayer/Panel" node_paths=PackedStringArray("error_message")]
+[node name="SaveFileDialog" type="Panel" parent="CanvasLayer" node_paths=PackedStringArray("error_message")]
 visible = false
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -250.0
-offset_right = 250.0
-offset_bottom = 250.0
+offset_left = -249.0
+offset_top = -240.0
+offset_right = 251.0
+offset_bottom = 260.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_ogbra")
@@ -460,7 +526,18 @@ confirm_button = NodePath("VBoxContainer/Buttons/Save")
 back_button = NodePath("BackButton2")
 error_message = NodePath("Error")
 
-[node name="Error" type="Label" parent="CanvasLayer/Panel/SaveFileDialog"]
+[node name="ColorRect2" type="ColorRect" parent="CanvasLayer/SaveFileDialog"]
+layout_mode = 0
+offset_left = -711.0
+offset_top = -300.0
+offset_right = 1211.0
+offset_bottom = 783.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.0431373, 0.117647, 0.164706, 0.682353)
+metadata/_edit_lock_ = true
+
+[node name="Error" type="Label" parent="CanvasLayer/SaveFileDialog"]
 visible = false
 layout_mode = 2
 offset_left = 99.0
@@ -471,7 +548,7 @@ theme_override_colors/font_color = Color(0.666667, 0.596078, 0.411765, 1)
 text = "ERROR: Insert a file name!"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel/SaveFileDialog"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/SaveFileDialog"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -486,47 +563,47 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 15
 
-[node name="Label" type="Label" parent="CanvasLayer/Panel/SaveFileDialog/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/SaveFileDialog/VBoxContainer"]
 layout_mode = 2
 text = "SAVE FILE AS"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel/SaveFileDialog/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/SaveFileDialog/VBoxContainer"]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="CanvasLayer/Panel/SaveFileDialog/VBoxContainer/HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/SaveFileDialog/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "your file name"
 
-[node name="label" type="Label" parent="CanvasLayer/Panel/SaveFileDialog/VBoxContainer/HBoxContainer"]
+[node name="label" type="Label" parent="CanvasLayer/SaveFileDialog/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = ".json"
 horizontal_alignment = 1
 
-[node name="Divider" type="TextureRect" parent="CanvasLayer/Panel/SaveFileDialog/VBoxContainer"]
+[node name="Divider" type="TextureRect" parent="CanvasLayer/SaveFileDialog/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("8_t2j1e")
 
-[node name="Buttons" type="HBoxContainer" parent="CanvasLayer/Panel/SaveFileDialog/VBoxContainer"]
+[node name="Buttons" type="HBoxContainer" parent="CanvasLayer/SaveFileDialog/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 37
 
-[node name="Cancel" type="Button" parent="CanvasLayer/Panel/SaveFileDialog/VBoxContainer/Buttons"]
+[node name="Cancel" type="Button" parent="CanvasLayer/SaveFileDialog/VBoxContainer/Buttons"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("1_ogbra")
 text = "Cancel"
 
-[node name="Save" type="Button" parent="CanvasLayer/Panel/SaveFileDialog/VBoxContainer/Buttons"]
+[node name="Save" type="Button" parent="CanvasLayer/SaveFileDialog/VBoxContainer/Buttons"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("1_ogbra")
 text = "Save"
 
-[node name="BackButton2" type="TextureButton" parent="CanvasLayer/Panel/SaveFileDialog"]
+[node name="BackButton2" type="TextureButton" parent="CanvasLayer/SaveFileDialog"]
 layout_mode = 2
 offset_left = 12.0
 offset_top = 12.0
@@ -535,115 +612,29 @@ offset_bottom = 37.0
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("7_ld0r4")
 
-[node name="OpenFileDialog" type="Panel" parent="CanvasLayer/Panel" node_paths=PackedStringArray("error_message")]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/SaveFileDialog"]
+stream = ExtResource("11_f7qac")
+
+[node name="OpenFileDialog" type="FileDialog" parent="CanvasLayer"]
+title = "Open a File"
+initial_position = 2
+size = Vector2i(500, 500)
+theme = ExtResource("1_ogbra")
+ok_button_text = "Open"
+file_mode = 0
+access = 1
+
+[node name="NewFileDialog" type="Panel" parent="CanvasLayer" node_paths=PackedStringArray("error_message")]
 visible = false
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -250.0
-offset_right = 250.0
-offset_bottom = 250.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("1_ogbra")
-script = ExtResource("10_au6rp")
-file_name = NodePath("VBoxContainer/HBoxContainer/LineEdit")
-cancel_button = NodePath("VBoxContainer/Buttons/Cancel")
-confirm_button = NodePath("VBoxContainer/Buttons/Open")
-back_button = NodePath("BackButton")
-error_message = NodePath("Error")
-
-[node name="Error" type="Label" parent="CanvasLayer/Panel/OpenFileDialog"]
-visible = false
-layout_mode = 2
-offset_left = 99.0
-offset_top = 370.0
-offset_right = 399.0
-offset_bottom = 395.0
-theme_override_colors/font_color = Color(0.666667, 0.596078, 0.411765, 1)
-text = "ERROR: File does not exist!"
-horizontal_alignment = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel/OpenFileDialog"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -111.0
-offset_top = -29.0
-offset_right = 111.0
-offset_bottom = 30.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 15
-
-[node name="Label" type="Label" parent="CanvasLayer/Panel/OpenFileDialog/VBoxContainer"]
-layout_mode = 2
-text = "OPEN FILE"
-horizontal_alignment = 1
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel/OpenFileDialog/VBoxContainer"]
-layout_mode = 2
-
-[node name="LineEdit" type="LineEdit" parent="CanvasLayer/Panel/OpenFileDialog/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "your file name"
-
-[node name="label" type="Label" parent="CanvasLayer/Panel/OpenFileDialog/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = ".json"
-horizontal_alignment = 1
-
-[node name="Divider" type="TextureRect" parent="CanvasLayer/Panel/OpenFileDialog/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-texture = ExtResource("8_t2j1e")
-
-[node name="Buttons" type="HBoxContainer" parent="CanvasLayer/Panel/OpenFileDialog/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/separation = 37
-
-[node name="Cancel" type="Button" parent="CanvasLayer/Panel/OpenFileDialog/VBoxContainer/Buttons"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme = ExtResource("1_ogbra")
-text = "Cancel"
-
-[node name="Open" type="Button" parent="CanvasLayer/Panel/OpenFileDialog/VBoxContainer/Buttons"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme = ExtResource("1_ogbra")
-text = "Open"
-
-[node name="BackButton" type="TextureButton" parent="CanvasLayer/Panel/OpenFileDialog"]
-layout_mode = 2
-offset_left = 12.0
-offset_top = 12.0
-offset_right = 232.0
-offset_bottom = 37.0
-mouse_default_cursor_shape = 2
-texture_normal = ExtResource("7_ld0r4")
-
-[node name="NewFileDialog" type="Panel" parent="CanvasLayer/Panel" node_paths=PackedStringArray("error_message")]
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -250.0
-offset_right = 250.0
-offset_bottom = 250.0
+offset_left = -249.0
+offset_top = -240.0
+offset_right = 251.0
+offset_bottom = 260.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_ogbra")
@@ -652,9 +643,21 @@ file_name = NodePath("VBoxContainer/HBoxContainer/LineEdit")
 cancel_button = NodePath("VBoxContainer/Buttons/Cancel")
 confirm_button = NodePath("VBoxContainer/Buttons/Create")
 back_button = NodePath("BackButton")
-error_message = NodePath("../OpenFileDialog/Error")
+error_message = NodePath("Error")
 
-[node name="Error" type="Label" parent="CanvasLayer/Panel/NewFileDialog"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/NewFileDialog"]
+layout_mode = 0
+offset_left = -711.0
+offset_top = -300.0
+offset_right = 1211.0
+offset_bottom = 783.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.0431373, 0.117647, 0.164706, 0.576471)
+metadata/_edit_lock_ = true
+
+[node name="Error" type="Label" parent="CanvasLayer/NewFileDialog"]
+visible = false
 layout_mode = 2
 offset_left = 99.0
 offset_top = 370.0
@@ -664,7 +667,7 @@ theme_override_colors/font_color = Color(0.666667, 0.596078, 0.411765, 1)
 text = "ERROR: Enter a valid file name!"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel/NewFileDialog"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/NewFileDialog"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -679,47 +682,47 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 15
 
-[node name="Label" type="Label" parent="CanvasLayer/Panel/NewFileDialog/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/NewFileDialog/VBoxContainer"]
 layout_mode = 2
 text = "CREATE A NEW FILE"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel/NewFileDialog/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/NewFileDialog/VBoxContainer"]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="CanvasLayer/Panel/NewFileDialog/VBoxContainer/HBoxContainer"]
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/NewFileDialog/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "your file name"
 
-[node name="label" type="Label" parent="CanvasLayer/Panel/NewFileDialog/VBoxContainer/HBoxContainer"]
+[node name="label" type="Label" parent="CanvasLayer/NewFileDialog/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = ".json"
 horizontal_alignment = 1
 
-[node name="Divider" type="TextureRect" parent="CanvasLayer/Panel/NewFileDialog/VBoxContainer"]
+[node name="Divider" type="TextureRect" parent="CanvasLayer/NewFileDialog/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("8_t2j1e")
 
-[node name="Buttons" type="HBoxContainer" parent="CanvasLayer/Panel/NewFileDialog/VBoxContainer"]
+[node name="Buttons" type="HBoxContainer" parent="CanvasLayer/NewFileDialog/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 37
 
-[node name="Cancel" type="Button" parent="CanvasLayer/Panel/NewFileDialog/VBoxContainer/Buttons"]
+[node name="Cancel" type="Button" parent="CanvasLayer/NewFileDialog/VBoxContainer/Buttons"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("1_ogbra")
 text = "Cancel"
 
-[node name="Create" type="Button" parent="CanvasLayer/Panel/NewFileDialog/VBoxContainer/Buttons"]
+[node name="Create" type="Button" parent="CanvasLayer/NewFileDialog/VBoxContainer/Buttons"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme = ExtResource("1_ogbra")
 text = "Create"
 
-[node name="BackButton" type="TextureButton" parent="CanvasLayer/Panel/NewFileDialog"]
+[node name="BackButton" type="TextureButton" parent="CanvasLayer/NewFileDialog"]
 layout_mode = 2
 offset_left = 12.0
 offset_top = 12.0
@@ -730,11 +733,12 @@ texture_normal = ExtResource("7_ld0r4")
 
 [connection signal="connection_request" from="." to="." method="_on_connection_request"]
 [connection signal="disconnection_request" from="." to="." method="_on_disconnection_request"]
-[connection signal="open_file" from="." to="." method="_on_open_file"]
 [connection signal="toggled" from="Menu" to="." method="_on_menu_toggled"]
 [connection signal="pressed" from="Tool/NewNode" to="." method="_on_new_node_pressed"]
 [connection signal="pressed" from="Tool/NewFeature" to="." method="_on_new_feature_pressed"]
+[connection signal="pressed" from="Tool/Option" to="." method="_on_new_option_pressed"]
 [connection signal="pressed" from="Tool/EndNode" to="." method="_on_end_node_pressed"]
+[connection signal="pressed" from="CanvasLayer/Panel/MenuList/New" to="." method="_on_new_pressed"]
 [connection signal="pressed" from="CanvasLayer/Panel/MenuList/Open" to="." method="_on_open_pressed"]
 [connection signal="pressed" from="CanvasLayer/Panel/MenuList/SaveAs" to="." method="_on_save_as_pressed"]
 [connection signal="pressed" from="CanvasLayer/Panel/MenuList/Options" to="." method="_on_options_pressed"]
@@ -748,17 +752,14 @@ texture_normal = ExtResource("7_ld0r4")
 [connection signal="pressed" from="CanvasLayer/Panel/Options/FontSize/L" to="." method="_on_font_size_pressed" binds= ["2"]]
 [connection signal="pressed" from="CanvasLayer/Panel/Options/Buttons/Cancel" to="." method="_on_options_cancel_pressed"]
 [connection signal="pressed" from="CanvasLayer/Panel/Options/Buttons/Save" to="." method="_on_save_pressed"]
-[connection signal="text_changed" from="CanvasLayer/Panel/SaveFileDialog/VBoxContainer/HBoxContainer/LineEdit" to="CanvasLayer/Panel/SaveFileDialog" method="_on_line_edit_text_changed"]
-[connection signal="pressed" from="CanvasLayer/Panel/SaveFileDialog/VBoxContainer/Buttons/Cancel" to="CanvasLayer/Panel/SaveFileDialog" method="_on_cancel_pressed"]
-[connection signal="pressed" from="CanvasLayer/Panel/SaveFileDialog/VBoxContainer/Buttons/Save" to="CanvasLayer/Panel/SaveFileDialog" method="_on_save_pressed"]
-[connection signal="pressed" from="CanvasLayer/Panel/SaveFileDialog/BackButton2" to="CanvasLayer/Panel/SaveFileDialog" method="_on_cancel_pressed"]
-[connection signal="text_changed" from="CanvasLayer/Panel/OpenFileDialog/VBoxContainer/HBoxContainer/LineEdit" to="CanvasLayer/Panel/OpenFileDialog" method="_on_line_edit_text_changed"]
-[connection signal="pressed" from="CanvasLayer/Panel/OpenFileDialog/VBoxContainer/Buttons/Cancel" to="CanvasLayer/Panel/OpenFileDialog" method="_on_cancel_pressed"]
-[connection signal="pressed" from="CanvasLayer/Panel/OpenFileDialog/VBoxContainer/Buttons/Open" to="CanvasLayer/Panel/OpenFileDialog" method="_on_open_pressed"]
-[connection signal="pressed" from="CanvasLayer/Panel/OpenFileDialog/BackButton" to="CanvasLayer/Panel/OpenFileDialog" method="_on_cancel_pressed"]
-[connection signal="text_changed" from="CanvasLayer/Panel/NewFileDialog/VBoxContainer/HBoxContainer/LineEdit" to="CanvasLayer/Panel/NewFileDialog" method="_on_line_edit_text_changed"]
-[connection signal="pressed" from="CanvasLayer/Panel/NewFileDialog/VBoxContainer/Buttons/Cancel" to="CanvasLayer/Panel/NewFileDialog" method="_on_cancel_pressed"]
-[connection signal="pressed" from="CanvasLayer/Panel/NewFileDialog/VBoxContainer/Buttons/Create" to="CanvasLayer/Panel/NewFileDialog" method="_on_create_pressed"]
-[connection signal="pressed" from="CanvasLayer/Panel/NewFileDialog/BackButton" to="CanvasLayer/Panel/NewFileDialog" method="_on_cancel_pressed"]
+[connection signal="text_changed" from="CanvasLayer/SaveFileDialog/VBoxContainer/HBoxContainer/LineEdit" to="CanvasLayer/SaveFileDialog" method="_on_line_edit_text_changed"]
+[connection signal="pressed" from="CanvasLayer/SaveFileDialog/VBoxContainer/Buttons/Cancel" to="CanvasLayer/SaveFileDialog" method="_on_cancel_pressed"]
+[connection signal="pressed" from="CanvasLayer/SaveFileDialog/VBoxContainer/Buttons/Save" to="CanvasLayer/SaveFileDialog" method="_on_save_pressed"]
+[connection signal="pressed" from="CanvasLayer/SaveFileDialog/BackButton2" to="CanvasLayer/SaveFileDialog" method="_on_cancel_pressed"]
+[connection signal="file_selected" from="CanvasLayer/OpenFileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="text_changed" from="CanvasLayer/NewFileDialog/VBoxContainer/HBoxContainer/LineEdit" to="CanvasLayer/NewFileDialog" method="_on_line_edit_text_changed"]
+[connection signal="pressed" from="CanvasLayer/NewFileDialog/VBoxContainer/Buttons/Cancel" to="CanvasLayer/NewFileDialog" method="_on_cancel_pressed"]
+[connection signal="pressed" from="CanvasLayer/NewFileDialog/VBoxContainer/Buttons/Create" to="CanvasLayer/NewFileDialog" method="_on_create_pressed"]
+[connection signal="pressed" from="CanvasLayer/NewFileDialog/BackButton" to="CanvasLayer/NewFileDialog" method="_on_cancel_pressed"]
 
 [editable path="Start"]

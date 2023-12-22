@@ -1,0 +1,72 @@
+[gd_scene load_steps=5 format=3 uid="uid://nyi26curqqr1"]
+
+[ext_resource type="Script" path="res://Option.gd" id="1_ojjra"]
+[ext_resource type="PackedScene" uid="uid://du8buwy48dvor" path="res://CodeEdit.tscn" id="2_bdsx1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jb8gg"]
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_86r6n"]
+number_color = Color(0.368627, 0.815686, 0, 1)
+symbol_color = Color(0.898039, 0.917647, 0.917647, 1)
+function_color = Color(0.368627, 0.815686, 0, 1)
+keyword_colors = {
+"else if": Color(0.85098, 0.403922, 0.917647, 1),
+"is behind us": Color(0.694118, 0.345098, 1, 1),
+"no more what ifs": Color(0.85098, 0.403922, 0.917647, 1),
+"or else": Color(0.85098, 0.403922, 0.917647, 1),
+"scream": Color(0.694118, 0.345098, 1, 1)
+}
+color_regions = {
+"//": Color(1, 1, 1, 0.423529)
+}
+
+[node name="Option" type="GraphNode"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1432.0
+offset_bottom = -774.0
+grow_horizontal = 2
+grow_vertical = 2
+title = "Option"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+script = ExtResource("1_ojjra")
+
+[node name="Text" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Text"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_jb8gg")
+text = "Text"
+
+[node name="TextEdit" parent="Text" instance=ExtResource("2_bdsx1")]
+custom_minimum_size = Vector2(2.08165e-12, 200)
+layout_mode = 2
+size_flags_vertical = 3
+tooltip_text = "Press ENTER to break apart the dialog the same 
+character is talking but on a new line.
+Line breaks in JSON code will be shown as /n.
+
+Use <<$expression>> in text to change expression."
+theme_override_colors/background_color = Color(0, 0, 0, 0)
+text = ""
+placeholder_text = "Type your character responses here...
+"
+syntax_highlighter = SubResource("CodeHighlighter_86r6n")
+scroll_v_scroll_speed = 90.0
+scroll_fit_content_height = true
+
+[connection signal="close_request" from="." to="." method="_on_close_request"]
+[connection signal="dragged" from="." to="." method="_on_dragged"]
+[connection signal="resize_request" from="." to="." method="_on_resize_request"]
+
+[editable path="Text/TextEdit"]

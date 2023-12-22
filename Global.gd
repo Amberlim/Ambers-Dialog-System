@@ -1,8 +1,8 @@
 extends Node
 
-class_name Settings
+#class_name Settings
 
-var settings_save_path = "user://settings.res"
+#var settings_save_path = "user://settings.res"
 #
 #func _ready():
 #	if ResourceLoader.exists(settings_save_path):

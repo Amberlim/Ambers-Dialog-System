@@ -100,7 +100,7 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_p5ccu")
 icon = ExtResource("5_upf7y")
 
-[node name="Variable" parent="VariablesGroup" instance=ExtResource("4_bptyl")]
+[node name="Variable1" parent="VariablesGroup" instance=ExtResource("4_bptyl")]
 layout_mode = 2
 
 [node name="EmitSignalGroup" type="VBoxContainer" parent="."]
@@ -127,16 +127,16 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_p5ccu")
 icon = ExtResource("5_upf7y")
 
-[node name="Signal" type="HBoxContainer" parent="EmitSignalGroup"]
+[node name="Signal1" type="HBoxContainer" parent="EmitSignalGroup"]
 layout_mode = 2
 script = ExtResource("4_xyw2x")
 
-[node name="LineEdit" type="LineEdit" parent="EmitSignalGroup/Signal"]
+[node name="LineEdit" type="LineEdit" parent="EmitSignalGroup/Signal1"]
 layout_mode = 2
 size_flags_horizontal = 3
 expand_to_text_length = true
 
-[node name="CancelButton" type="Button" parent="EmitSignalGroup/Signal"]
+[node name="CancelButton" type="Button" parent="EmitSignalGroup/Signal1"]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ca652")
@@ -166,7 +166,7 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_p5ccu")
 icon = ExtResource("5_upf7y")
 
-[node name="Conditional" parent="ConditionalsGroup" instance=ExtResource("6_4v6s7")]
+[node name="Conditional1" parent="ConditionalsGroup" instance=ExtResource("6_4v6s7")]
 layout_mode = 2
 
 [connection signal="_cancel_button_pressed" from="." to="." method="_on_cancel_button_pressed"]
@@ -176,8 +176,8 @@ layout_mode = 2
 [connection signal="item_selected" from="Feature/OptionButton" to="." method="_on_option_button_item_selected"]
 [connection signal="pressed" from="VariablesGroup/Title/AddVarButton" to="." method="_on_add_button_pressed" binds= ["variable"]]
 [connection signal="pressed" from="EmitSignalGroup/Title/AddSignalButton" to="." method="_on_add_button_pressed" binds= ["signal"]]
-[connection signal="pressed" from="EmitSignalGroup/Signal/CancelButton" to="EmitSignalGroup/Signal" method="_on_cancel_button_pressed" flags=18]
+[connection signal="pressed" from="EmitSignalGroup/Signal1/CancelButton" to="EmitSignalGroup/Signal1" method="_on_cancel_button_pressed" flags=18]
 [connection signal="pressed" from="ConditionalsGroup/Title/AddConditionalButton" to="." method="_on_add_button_pressed" binds= ["conditional"]]
 
-[editable path="VariablesGroup/Variable"]
-[editable path="ConditionalsGroup/Conditional"]
+[editable path="VariablesGroup/Variable1"]
+[editable path="ConditionalsGroup/Conditional1"]

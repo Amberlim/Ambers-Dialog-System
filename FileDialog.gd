@@ -20,32 +20,31 @@ func _on_line_edit_text_changed(new_text):
 func _on_save_pressed():
 	if file_path and file_path.is_valid_filename():
 		
-		var dialog = get_tree().compile_nodes_into_json()
-		print(dialog)
+		# Get compiled data
+		var dialog = get_tree().current_scene.compile_nodes_into_json()
+	
 		# Change window title
-		Window.title = file_path
+		DisplayServer.window_set_title(file_path)
+		
+		# Convert to Json
+		dialog = JSON.stringify(dialog)
+		
+		# Save to file
+		var file = FileAccess.open("user://" + file_path + ".json", FileAccess.WRITE)
+		file.store_string(dialog)
+		
+		# Hide self
+		self.hide()
+		
+		# Play notification sound
+		var notification_sound = $AudioStreamPlayer
+		if not notification_sound.playing:
+			notification_sound.play()
 		
 	else:
 		error_message.show()
 
-# Open a file
-func _on_open_pressed():
-	if file_path:
-		if Global.file_exists(file_path):
-			
-			# Parse JSON to *dialog* dictionary in scene tree
-			var file = FileAccess.open(Global.get_formal_filepath(file_path),FileAccess.READ)
-			var dialog = JSON.parse_string(file.get_as_test())
-			
-			# Change window title
-			Window.title = file_path
-			
-			# Emit signal
-			get_tree().emit("open_file", dialog)
-			
-		else:
-			error_message.show()
-
 # Create a new file			
 func _on_create_pressed():
 	_on_save_pressed()
+

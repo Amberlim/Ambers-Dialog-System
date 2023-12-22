@@ -1,6 +1,23 @@
-[gd_resource type="Theme" load_steps=11 format=3 uid="uid://thbfepb48rke"]
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://thbfepb48rke"]
 
 [ext_resource type="FontFile" uid="uid://cr7irh45ojvhq" path="res://Assets/Fonts/RobotoMono-VariableFont_wght.ttf" id="2_wg7ae"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6u15c"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 0.219608)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 4
+expand_margin_left = 9.0
+expand_margin_top = 1.0
+expand_margin_right = 11.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1hd0u"]
 content_margin_top = 4.0
@@ -102,6 +119,8 @@ bg_color = Color(0.0431373, 0.117647, 0.164706, 1)
 
 [resource]
 default_font = ExtResource("2_wg7ae")
+Button/colors/font_disabled_color = Color(0.87451, 0.87451, 0.87451, 0.152941)
+Button/styles/disabled = SubResource("StyleBoxFlat_6u15c")
 Button/styles/hover = SubResource("StyleBoxFlat_1hd0u")
 Button/styles/normal = SubResource("StyleBoxFlat_yi158")
 GraphEdit/styles/bg = SubResource("StyleBoxFlat_6binw")

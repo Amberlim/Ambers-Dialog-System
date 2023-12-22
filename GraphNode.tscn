@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dae5airjwff28"]
+[gd_scene load_steps=6 format=3 uid="uid://dae5airjwff28"]
 
 [ext_resource type="Script" path="res://GraphNode.gd" id="2_5cqbw"]
 [ext_resource type="PackedScene" uid="uid://du8buwy48dvor" path="res://CodeEdit.tscn" id="2_53o6y"]
 [ext_resource type="Texture2D" uid="uid://mrtuxxullwkh" path="res://Assets/UI/Divider.svg" id="2_okvfh"]
+[ext_resource type="AudioStream" uid="uid://dcxs2au3nfiap" path="res://Assets/Sound/Drag.wav" id="4_f8k02"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_03hav"]
 
@@ -64,6 +65,10 @@ layout_mode = 2
 
 [node name="OptionButton" type="OptionButton" parent="Character/Character"]
 layout_mode = 2
+tooltip_text = "You can add or change character names 
+by going to the inspector in GraphNode.tscn 
+(Character > Character > OptionButton).
+"
 item_count = 3
 popup/item_0/text = "Mum"
 popup/item_0/id = 0
@@ -89,6 +94,7 @@ text = "Line Asset "
 
 [node name="LineEdit" type="LineEdit" parent="LineAsset"]
 layout_mode = 2
+tooltip_text = "Useful for attaching voice acting file (as a string)."
 placeholder_text = "optional"
 
 [node name="Text" type="VBoxContainer" parent="."]
@@ -110,9 +116,9 @@ text = "Text"
 custom_minimum_size = Vector2(2.08165e-12, 200)
 layout_mode = 2
 size_flags_vertical = 3
-tooltip_text = "Press ENTER to break apart the dialog if you want 
-the same character to be talking but on a new line.
-The backend code will separate them with /n.
+tooltip_text = "Press ENTER to break apart the dialog the same 
+character is talking but on a new line.
+Line breaks in JSON code will be shown as /n.
 
 Use <<$expression>> in text to change expression."
 theme_override_colors/background_color = Color(0, 0, 0, 0)
@@ -127,6 +133,12 @@ Press ENTER to break dialog (if the character is still the same).
 scroll_v_scroll_speed = 90.0
 scroll_fit_content_height = true
 
+[node name="DragSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_f8k02")
+
 [connection signal="close_request" from="." to="." method="_on_close_request"]
+[connection signal="dragged" from="." to="." method="_on_dragged"]
 [connection signal="resize_request" from="." to="." method="_on_resize_request"]
 [connection signal="item_selected" from="Character/Character/OptionButton" to="." method="_on_option_button_item_selected"]
+
+[editable path="Text/TextEdit"]

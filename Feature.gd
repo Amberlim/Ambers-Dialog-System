@@ -109,12 +109,15 @@ func _on_add_button_pressed(feature_type):
 func _on_option_button_item_selected(index):
 	if index == 0:
 		variables_group.show()
-		variable_count += 1
+		if variable_count != 0:
+			variable_count += 1
 		
 	elif index == 1: 
 		emit_signal_group.show()
-		signal_count += 1
+		if signal_count != 0:
+			signal_count += 1
 		
 	else:
 		conditionals_group.show()
-		conditional_count += 1
+		if conditional_count != 0:
+			conditional_count += 1
