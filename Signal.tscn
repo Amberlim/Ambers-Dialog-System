@@ -5,18 +5,16 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ca652"]
 
-[node name="Signal" type="HBoxContainer"]
+[node name="Signal" type="HBoxContainer" node_paths=PackedStringArray("text")]
 offset_right = 300.0
 offset_bottom = 37.0
 script = ExtResource("1_jx2vx")
+text = NodePath("LineEdit")
 
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 expand_to_text_length = true
-
-[node name="CheckButton" type="CheckButton" parent="."]
-layout_mode = 2
 
 [node name="CancelButton" type="Button" parent="."]
 layout_mode = 2

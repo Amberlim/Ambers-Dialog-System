@@ -3,6 +3,9 @@ extends GraphEdit
 # Get nodes
 @onready var last_instanced_node = $Start
 @onready var saved_notification = $Tool/SavedNotification
+@onready var spawn_sound = $SpawnSound
+var rng = RandomNumberGenerator.new()
+
 
 # Keep Count
 var dialog_node_count = 0
@@ -34,11 +37,17 @@ func _input(event):
 			save_file_dialog._on_save_pressed()
 			saved_notification.get_node("AnimationPlayer").play("FadeOut")
 
-		
+
+func random_number():
+	return rng.randf_range(1, 1.5)
 
 	
 ################## Creating a new node ####################################
-func _on_new_node_pressed():
+func _on_new_node_pressed(open_save : bool = false):
+	
+	spawn_sound.pitch_scale = random_number()
+	spawn_sound.play()
+	
 	var new_node = load("res://GraphNode.tscn")
 	new_node = new_node.instantiate()
 	
@@ -47,7 +56,10 @@ func _on_new_node_pressed():
 	new_node.name = "DIALOG_" + str(dialog_node_count)
 	new_node.node_data["node title"] = new_node.name
 	
-	new_node.position_offset = last_instanced_node.position_offset + Vector2(500,10)
+	if not open_save:
+		if last_instanced_node == null:
+			last_instanced_node = $Start
+		new_node.position_offset = last_instanced_node.position_offset + Vector2(500,10)
 	
 	last_instanced_node = new_node
 	
@@ -57,7 +69,10 @@ func _on_new_node_pressed():
 	
 	
 ################## Creating a new feature ####################################
-func _on_new_feature_pressed():
+func _on_new_feature_pressed(open_save : bool = false):
+	spawn_sound.pitch_scale = random_number()
+	spawn_sound.play()
+	
 	var new_feature = load("res://Feature.tscn")
 	new_feature = new_feature.instantiate()
 	add_child(new_feature)
@@ -66,12 +81,18 @@ func _on_new_feature_pressed():
 	new_feature.name = "FEATURE_" + str(dialog_node_count)
 	new_feature.node_data["node title"] = new_feature.title
 	
-	new_feature.position_offset = last_instanced_node.position_offset + Vector2(500,10)
+	if not open_save:
+		if last_instanced_node == null:
+			last_instanced_node = $Start
+		new_feature.position_offset = last_instanced_node.position_offset + Vector2(500,10)
 	
 	last_instanced_node = new_feature
 	
 ################## Creating a new option ####################################
-func _on_new_option_pressed():
+func _on_new_option_pressed(open_save : bool = false):
+	spawn_sound.pitch_scale = random_number()
+	spawn_sound.play()
+	
 	var new_option = load("res://Option.tscn")
 	new_option = new_option.instantiate()
 	
@@ -80,7 +101,10 @@ func _on_new_option_pressed():
 	new_option.name = "OPTION_" + str(dialog_node_count)
 	new_option.node_data["node title"] = new_option.name
 	
-	new_option.position_offset = last_instanced_node.position_offset + Vector2(500,10)
+	if not open_save:
+		if last_instanced_node == null:
+			last_instanced_node = $Start
+		new_option.position_offset = last_instanced_node.position_offset + Vector2(350,10)
 	
 	last_instanced_node = new_option
 	
@@ -88,6 +112,9 @@ func _on_new_option_pressed():
  
 ################## Ending the dialog ####################################
 func _on_end_node_pressed():
+	spawn_sound.pitch_scale = random_number()
+	spawn_sound.play()
+	
 	var end_node = load("res://End.tscn")
 	end_node = end_node.instantiate()
 	add_child(end_node)
@@ -105,7 +132,7 @@ func _on_file_dialog_file_selected(path):
 	
 	# Clear all existing nodes
 	clear_all()
-	await(graph_cleared)
+	await self.graph_cleared
 	
 	# Hide Option Panel
 	options_panel.hide()
@@ -124,11 +151,12 @@ func _on_file_dialog_file_selected(path):
 		
 		# if type: node
 		if "DIALOG" in node["node title"]:
-			_on_new_node_pressed()
+			_on_new_node_pressed(true)
 			var current_node = get_node(node["node title"])
 
-			current_node.position.x = node["offset_x"]
-			current_node.position.y = node["offset_y"]
+			current_node.position_offset.x = node["offset_x"]
+			current_node.position_offset.y = node["offset_y"]
+			
 			current_node.text.text = node["text"]
 		
 			# match item string to item index
@@ -144,18 +172,20 @@ func _on_file_dialog_file_selected(path):
 			
 		# if type: feature	
 		elif "FEATURE" in node["node title"]:
-			_on_new_feature_pressed()
+			_on_new_feature_pressed(true)
 			var current_node = get_node(node["node title"])
 			
-			current_node.position.x = node["offset_x"]
-			current_node.position.y = node["offset_y"]
+			current_node.position_offset.x = node["offset_x"]
+			current_node.position_offset.y = node["offset_y"]
+			
+			var node_data = current_node.node_data
 			
 			# variable
-			if not current_node["variables"].is_empty():
+			if not node_data["variables"].is_empty():
 				var variables_group = current_node.get_node("VariablesGroup")
 				variables_group.show()
 				
-				for variable_set in current_node["variables"]:
+				for variable_set in node_data["variables"]:
 					current_node._on_add_button_pressed("variable")
 					
 					var current_variable_count = current_node.variable_count
@@ -165,11 +195,11 @@ func _on_file_dialog_file_selected(path):
 					variable_node.active = node["variables"].values()[current_variable_count]
 			
 			# signals
-			if not current_node["signals"].is_empty():
+			if not node_data["signals"].is_empty():
 				var emit_signal_group = current_node.get_node("EmitSignalGroup")
 				emit_signal_group.show()
 				
-				for single_signal in current_node["signals"]:
+				for single_signal in node_data["signals"]:
 					current_node._on_add_button_pressed("signal")
 					
 					var current_signal_count = current_node.signal_count
@@ -178,11 +208,11 @@ func _on_file_dialog_file_selected(path):
 					signal_node.text = node["signals"][current_signal_count]
 			
 			# conditionals
-			if not current_node["conditionals"].is_empty():
+			if not node_data["conditionals"].is_empty():
 				var conditionals_group = current_node.get_node("ConditionalsGroup")
 				conditionals_group.show()
 				
-				for conditional in current_node["conditionals"]:
+				for conditional in node_data["conditionals"]:
 					current_node._on_add_button_pressed("conditional")
 					
 					var current_conditional_count = current_node.conditional_count
@@ -193,13 +223,12 @@ func _on_file_dialog_file_selected(path):
 			
 		# if type: option
 		elif "OPTION" in node["node title"]:
-			_on_new_option_pressed()
+			_on_new_option_pressed(true)
 			var current_node = get_node(node["node title"])
 
-			current_node.position.x = node["offset_x"]
-			current_node.position.y = node["offset_y"]
+			current_node.position_offset.x = node["offset_x"]
+			current_node.position_offset.y = node["offset_y"]
 			current_node.text.text = node["text"]
-			
 		
 		# Link Connections
 		for to in node["go to"]:
@@ -214,6 +243,7 @@ func compile_nodes_into_json():
 	var existing_nodes = get_tree().get_nodes_in_group("nodes")
 	
 	for node in existing_nodes:
+
 		node.update_data()
 		
 		dialog[node.node_data["node title"]] = node.node_data
@@ -304,4 +334,3 @@ func clear_all():
 	dialog_node_count = 0
 	graph_cleared.emit()
 		
-

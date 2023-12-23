@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://dae5airjwff28"]
+[gd_scene load_steps=5 format=3 uid="uid://dae5airjwff28"]
 
 [ext_resource type="Script" path="res://GraphNode.gd" id="2_5cqbw"]
 [ext_resource type="PackedScene" uid="uid://du8buwy48dvor" path="res://CodeEdit.tscn" id="2_53o6y"]
 [ext_resource type="Texture2D" uid="uid://mrtuxxullwkh" path="res://Assets/UI/Divider.svg" id="2_okvfh"]
-[ext_resource type="AudioStream" uid="uid://dcxs2au3nfiap" path="res://Assets/Sound/Drag.wav" id="4_f8k02"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_03hav"]
 
@@ -132,9 +131,6 @@ Press ENTER to break dialog (if the character is still the same).
 "
 scroll_v_scroll_speed = 90.0
 scroll_fit_content_height = true
-
-[node name="DragSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_f8k02")
 
 [connection signal="close_request" from="." to="." method="_on_close_request"]
 [connection signal="dragged" from="." to="." method="_on_dragged"]

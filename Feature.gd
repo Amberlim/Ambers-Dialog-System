@@ -25,9 +25,11 @@ func update_data():
 	node_data["offset_x"] = self.position_offset.x
 	node_data["offset_y"] = self.position_offset.y
 
+	print("var count = " + str(variable_count) + ", signal count = " + str(signal_count) + ", conditional count = " + str(conditional_count))
+	
 	if variable_count != 0:
 		for individual_variable in variables_group.get_children():
-			if "variable" in individual_variable.name:
+			if "Variable" in individual_variable.name:
 				var var_active = individual_variable.get_node("CheckButton").button_pressed 
 				var var_name = individual_variable.get_node("LineEdit").text 
 				
@@ -35,13 +37,13 @@ func update_data():
 		
 	if signal_count != 0 :		
 		for individual_signal in emit_signal_group.get_children():	
-			if "signal"	in individual_signal.name:
-				var signal_name = individual_signal.get_node("line_edit").text
+			if "Signal"	in individual_signal.name:
+				var signal_name = individual_signal.get_node("LineEdit").text
 				node_data["signals"].append(signal_name)
 
 	if conditional_count != 0:
 		for individual_conditional in conditionals_group.get_children():
-			if "conditional" in individual_conditional.name:
+			if "Conditional" in individual_conditional.name:
 				var condition_exists = individual_conditional.get_node("CheckButton").button_pressed 
 				var condition_name = individual_conditional.get_node("LineEdit").text 
 				
@@ -91,33 +93,32 @@ func _on_add_button_pressed(feature_type):
 		variable_count += 1
 		
 		var new_variable = variable.instantiate()
+		new_variable.name = "Variable" + str(variable_count)
 		variables_group.add_child(new_variable)
 		
 	elif feature_type == "signal":
 		signal_count += 1	
 		
 		var new_emit_signal = emit_signal.instantiate()
+		new_emit_signal.name = "Signal" + str(signal_count)
 		emit_signal_group.add_child(new_emit_signal)
 		
 	elif feature_type == "conditional":
 		conditional_count += 1
-		
 		var new_conditional = conditional.instantiate()
+		new_conditional.name = "Conditional" + str(conditional_count)
 		conditionals_group.add_child(new_conditional)
 
 
 func _on_option_button_item_selected(index):
 	if index == 0:
 		variables_group.show()
-		if variable_count != 0:
-			variable_count += 1
+		_on_add_button_pressed("variable")
 		
 	elif index == 1: 
 		emit_signal_group.show()
-		if signal_count != 0:
-			signal_count += 1
+		_on_add_button_pressed("signal")
 		
 	else:
 		conditionals_group.show()
-		if conditional_count != 0:
-			conditional_count += 1
+		_on_add_button_pressed("conditional")

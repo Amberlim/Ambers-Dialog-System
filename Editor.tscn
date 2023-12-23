@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cxp4cacjxxr8i"]
+[gd_scene load_steps=31 format=3 uid="uid://cxp4cacjxxr8i"]
 
 [ext_resource type="Texture2D" uid="uid://br3moe3r4b2jh" path="res://Assets/UI/MenuIcon.svg" id="1_lq43a"]
 [ext_resource type="Theme" uid="uid://thbfepb48rke" path="res://Assets/UI/GeneralTheme.tres" id="1_ogbra"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://mrtuxxullwkh" path="res://Assets/UI/Divider.svg" id="8_t2j1e"]
 [ext_resource type="Script" path="res://FileDialog.gd" id="10_au6rp"]
 [ext_resource type="AudioStream" uid="uid://dmdl30ltmnjd5" path="res://Assets/Sound/Saved.wav" id="11_f7qac"]
+[ext_resource type="AudioStream" uid="uid://dcxs2au3nfiap" path="res://Assets/Sound/Drag.wav" id="12_82ngn"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8behx"]
 
@@ -614,6 +615,7 @@ texture_normal = ExtResource("7_ld0r4")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/SaveFileDialog"]
 stream = ExtResource("11_f7qac")
+volume_db = -5.0
 
 [node name="OpenFileDialog" type="FileDialog" parent="CanvasLayer"]
 title = "Open a File"
@@ -730,6 +732,9 @@ offset_right = 232.0
 offset_bottom = 37.0
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("7_ld0r4")
+
+[node name="SpawnSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_82ngn")
 
 [connection signal="connection_request" from="." to="." method="_on_connection_request"]
 [connection signal="disconnection_request" from="." to="." method="_on_disconnection_request"]

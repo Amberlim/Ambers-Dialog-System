@@ -1,7 +1,6 @@
 extends HBoxContainer
 
 @export var text : LineEdit
-@export var active : CheckButton
 
 func _on_cancel_button_pressed():
 	get_parent().get_parent()._cancel_button_pressed.emit(get_parent().name.to_lower())

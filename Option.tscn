@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://nyi26curqqr1"]
+[gd_scene load_steps=8 format=3 uid="uid://nyi26curqqr1"]
 
 [ext_resource type="Script" path="res://Option.gd" id="1_ojjra"]
-[ext_resource type="PackedScene" uid="uid://du8buwy48dvor" path="res://CodeEdit.tscn" id="2_bdsx1"]
+[ext_resource type="FontFile" uid="uid://cr7irh45ojvhq" path="res://Assets/Fonts/RobotoMono-VariableFont_wght.ttf" id="2_s3y22"]
+[ext_resource type="Script" path="res://CodeEdit.gd" id="3_8tdp0"]
+[ext_resource type="AudioStream" uid="uid://bpuuj0excj3p7" path="res://Assets/Sound/Type2.wav" id="4_yc4y8"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jb8gg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h0v5b"]
 
 [sub_resource type="CodeHighlighter" id="CodeHighlighter_86r6n"]
 number_color = Color(0.368627, 0.815686, 0, 1)
@@ -20,12 +24,12 @@ color_regions = {
 "//": Color(1, 1, 1, 0.423529)
 }
 
-[node name="Option" type="GraphNode"]
+[node name="Option" type="GraphNode" groups=["nodes"]]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1432.0
-offset_bottom = -774.0
+offset_right = -1665.0
+offset_bottom = -796.0
 grow_horizontal = 2
 grow_vertical = 2
 title = "Option"
@@ -46,27 +50,46 @@ layout_mode = 2
 [node name="Label" type="Label" parent="Text"]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_jb8gg")
-text = "Text"
+text = "Player Response"
 
-[node name="TextEdit" parent="Text" instance=ExtResource("2_bdsx1")]
+[node name="TextEdit" type="CodeEdit" parent="Text"]
 custom_minimum_size = Vector2(2.08165e-12, 200)
 layout_mode = 2
 size_flags_vertical = 3
-tooltip_text = "Press ENTER to break apart the dialog the same 
-character is talking but on a new line.
-Line breaks in JSON code will be shown as /n.
-
-Use <<$expression>> in text to change expression."
 theme_override_colors/background_color = Color(0, 0, 0, 0)
-text = ""
+theme_override_colors/font_color = Color(0.898039, 0.917647, 0.917647, 1)
+theme_override_colors/selection_color = Color(0, 0.713726, 1, 0.74902)
+theme_override_fonts/font = ExtResource("2_s3y22")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/focus = SubResource("StyleBoxEmpty_h0v5b")
 placeholder_text = "Type your character responses here...
 "
+wrap_mode = 1
+draw_tabs = true
 syntax_highlighter = SubResource("CodeHighlighter_86r6n")
+scroll_smooth = true
 scroll_v_scroll_speed = 90.0
 scroll_fit_content_height = true
+caret_blink = true
+line_folding = true
+gutters_draw_line_numbers = true
+indent_automatic_prefixes = Array[String]([":", "{", "[", "<", ">"])
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+auto_brace_completion_pairs = {
+"\"": "\"",
+"'": "'",
+"(": ")",
+"<<": ">>",
+"[": "]",
+"{": "}"
+}
+script = ExtResource("3_8tdp0")
+
+[node name="TypeSound" type="AudioStreamPlayer" parent="Text/TextEdit"]
+stream = ExtResource("4_yc4y8")
 
 [connection signal="close_request" from="." to="." method="_on_close_request"]
 [connection signal="dragged" from="." to="." method="_on_dragged"]
 [connection signal="resize_request" from="." to="." method="_on_resize_request"]
-
-[editable path="Text/TextEdit"]
+[connection signal="text_changed" from="Text/TextEdit" to="Text/TextEdit" method="_on_text_changed" flags=18]

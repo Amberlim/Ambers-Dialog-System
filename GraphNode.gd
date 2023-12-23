@@ -1,7 +1,6 @@
 extends GraphNode
 
 var node_type = "node"
-var rng = RandomNumberGenerator.new()
 
 #@export var text : CodeEdit
 @onready var text = $Text/TextEdit
@@ -25,10 +24,6 @@ func _on_close_request():
 func _on_dragged(from, to):
 	position_offset = to
 	
-	var drag_sound = $DragSound
-	drag_sound.pitch_scale = random_number()
-	drag_sound.play()
-	
 func _on_resize_request(new_minsize):
 	custom_minimum_size = new_minsize
 	
@@ -36,11 +31,9 @@ func _on_option_button_item_selected(index):
 	node_data["character"] = character.get_item_text(index)
 
 func update_data():
-	node_data["offset_x"] = position.x
-	node_data["offset_y"] = position.y
+	node_data["offset_x"] = position_offset.x
+	node_data["offset_y"] = position_offset.y
+	
 	node_data["text"] = text.text
 	node_data["line asset"] = line_asset.text
-
-func random_number():
-	return rng.randf_range(1, 1.5)
 

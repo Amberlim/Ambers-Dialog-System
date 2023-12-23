@@ -1,18 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://r2fsp6nqqrig"]
+[gd_scene load_steps=5 format=3 uid="uid://r2fsp6nqqrig"]
 
 [ext_resource type="Script" path="res://Feature.gd" id="1_qesbp"]
 [ext_resource type="Texture2D" uid="uid://mrtuxxullwkh" path="res://Assets/UI/Divider.svg" id="2_ldgu0"]
-[ext_resource type="PackedScene" uid="uid://catj2016lndqq" path="res://Variable.tscn" id="4_bptyl"]
-[ext_resource type="Script" path="res://FeatureLineEdits.gd" id="4_xyw2x"]
-[ext_resource type="Texture2D" uid="uid://djps6et7do5gr" path="res://Assets/UI/CancelIcon.svg" id="5_rwoc7"]
 [ext_resource type="Texture2D" uid="uid://bb8p1rufyc135" path="res://Assets/UI/PlusIcon.svg" id="5_upf7y"]
-[ext_resource type="PackedScene" uid="uid://c2s5ab5peh3dh" path="res://Conditional.tscn" id="6_4v6s7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p5ccu"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ca652"]
-
-[node name="Feature" type="GraphNode"]
+[node name="Feature" type="GraphNode" groups=["nodes"]]
+anchors_preset = -1
+anchor_bottom = -0.209259
 offset_left = 18.0
 offset_top = 42.0
 offset_right = 229.0
@@ -20,20 +16,20 @@ offset_bottom = 404.0
 title = "GramercyHeights"
 show_close = true
 resizable = true
-slot/0/left_enabled = false
+slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
 slot/0/left_icon = null
-slot/0/right_enabled = false
+slot/0/right_enabled = true
 slot/0/right_type = 0
 slot/0/right_color = Color(1, 1, 1, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
-slot/1/left_enabled = true
+slot/1/left_enabled = false
 slot/1/left_type = 0
 slot/1/left_color = Color(1, 1, 1, 1)
 slot/1/left_icon = null
-slot/1/right_enabled = true
+slot/1/right_enabled = false
 slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
@@ -77,6 +73,7 @@ popup/item_2/text = "Conditionals"
 popup/item_2/id = 2
 
 [node name="VariablesGroup" type="VBoxContainer" parent="."]
+visible = false
 layout_mode = 2
 
 [node name="Divider" type="TextureRect" parent="VariablesGroup"]
@@ -100,13 +97,11 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_p5ccu")
 icon = ExtResource("5_upf7y")
 
-[node name="Variable1" parent="VariablesGroup" instance=ExtResource("4_bptyl")]
-layout_mode = 2
-
 [node name="EmitSignalGroup" type="VBoxContainer" parent="."]
+visible = false
 layout_mode = 2
 
-[node name="Divider" type="TextureRect" parent="EmitSignalGroup" groups=["nodes"]]
+[node name="Divider" type="TextureRect" parent="EmitSignalGroup"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -127,22 +122,8 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_p5ccu")
 icon = ExtResource("5_upf7y")
 
-[node name="Signal1" type="HBoxContainer" parent="EmitSignalGroup"]
-layout_mode = 2
-script = ExtResource("4_xyw2x")
-
-[node name="LineEdit" type="LineEdit" parent="EmitSignalGroup/Signal1"]
-layout_mode = 2
-size_flags_horizontal = 3
-expand_to_text_length = true
-
-[node name="CancelButton" type="Button" parent="EmitSignalGroup/Signal1"]
-layout_mode = 2
-mouse_default_cursor_shape = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_ca652")
-icon = ExtResource("5_rwoc7")
-
 [node name="ConditionalsGroup" type="VBoxContainer" parent="."]
+visible = false
 layout_mode = 2
 
 [node name="Divider" type="TextureRect" parent="ConditionalsGroup"]
@@ -166,9 +147,6 @@ mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_p5ccu")
 icon = ExtResource("5_upf7y")
 
-[node name="Conditional1" parent="ConditionalsGroup" instance=ExtResource("6_4v6s7")]
-layout_mode = 2
-
 [connection signal="_cancel_button_pressed" from="." to="." method="_on_cancel_button_pressed"]
 [connection signal="close_request" from="." to="." method="_on_close_request" flags=18]
 [connection signal="resize_request" from="." to="." method="_on_resize_request" flags=18]
@@ -176,8 +154,4 @@ layout_mode = 2
 [connection signal="item_selected" from="Feature/OptionButton" to="." method="_on_option_button_item_selected"]
 [connection signal="pressed" from="VariablesGroup/Title/AddVarButton" to="." method="_on_add_button_pressed" binds= ["variable"]]
 [connection signal="pressed" from="EmitSignalGroup/Title/AddSignalButton" to="." method="_on_add_button_pressed" binds= ["signal"]]
-[connection signal="pressed" from="EmitSignalGroup/Signal1/CancelButton" to="EmitSignalGroup/Signal1" method="_on_cancel_button_pressed" flags=18]
 [connection signal="pressed" from="ConditionalsGroup/Title/AddConditionalButton" to="." method="_on_add_button_pressed" binds= ["conditional"]]
-
-[editable path="VariablesGroup/Variable1"]
-[editable path="ConditionalsGroup/Conditional1"]
