@@ -7,6 +7,7 @@ var node_type = "node"
 @onready var character = $Character/Character/OptionButton
 @onready var line_asset = $LineAsset/LineEdit
 	
+
 var node_data = {
 	"offset_x": 0,
 	"offset_y": 0,

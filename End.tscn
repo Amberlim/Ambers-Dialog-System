@@ -1,11 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://bwofr8b533eon"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wr0lq"]
-bg_color = Color(0.682353, 0.592157, 0.384314, 1)
-corner_radius_top_left = 1000
-corner_radius_top_right = 1000
-corner_radius_bottom_right = 1000
-corner_radius_bottom_left = 1024
+[gd_scene format=3 uid="uid://bwofr8b533eon"]
 
 [node name="End" type="GraphNode"]
 custom_minimum_size = Vector2(20, 20)
@@ -21,8 +14,6 @@ offset_bottom = 0.14003
 grow_vertical = 2
 mouse_filter = 1
 mouse_default_cursor_shape = 6
-theme_override_styles/frame = SubResource("StyleBoxFlat_wr0lq")
-theme_override_styles/selected_frame = SubResource("StyleBoxFlat_wr0lq")
 position_offset = Vector2(193, 497.5)
 slot/0/left_enabled = true
 slot/0/left_type = 0
@@ -38,4 +29,4 @@ slot/0/draw_stylebox = true
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
-text = "End"
+text = "END"

@@ -39,7 +39,9 @@ func update_data():
 		for individual_signal in emit_signal_group.get_children():	
 			if "Signal"	in individual_signal.name:
 				var signal_name = individual_signal.get_node("LineEdit").text
-				node_data["signals"].append(signal_name)
+				
+				if not signal_name in node_data["signals"]:
+					node_data["signals"].append(signal_name)
 
 	if conditional_count != 0:
 		for individual_conditional in conditionals_group.get_children():

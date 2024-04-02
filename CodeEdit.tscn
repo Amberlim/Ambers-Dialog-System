@@ -6,19 +6,14 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h0v5b"]
 
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_j1iqg"]
-number_color = Color(0.368627, 0.815686, 0, 1)
-symbol_color = Color(0.898039, 0.917647, 0.917647, 1)
-function_color = Color(0.368627, 0.815686, 0, 1)
-keyword_colors = {
-"else if": Color(0.85098, 0.403922, 0.917647, 1),
-"is behind us": Color(0.694118, 0.345098, 1, 1),
-"no more what ifs": Color(0.85098, 0.403922, 0.917647, 1),
-"or else": Color(0.85098, 0.403922, 0.917647, 1),
-"scream": Color(0.694118, 0.345098, 1, 1)
-}
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_cx3dy"]
+number_color = Color(1, 1, 1, 1)
+symbol_color = Color(1, 1, 1, 1)
+function_color = Color(1, 1, 1, 1)
+member_variable_color = Color(1, 1, 1, 1)
 color_regions = {
-"//": Color(1, 1, 1, 0.423529)
+"#": Color(1, 1, 1, 0.490196),
+"<< >>": Color(0.141176, 0.698039, 0.584314, 1)
 }
 
 [node name="TextEdit" type="CodeEdit"]
@@ -33,7 +28,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_h0v5b")
 text = "bla bla"
 wrap_mode = 1
 draw_tabs = true
-syntax_highlighter = SubResource("CodeHighlighter_j1iqg")
+syntax_highlighter = SubResource("CodeHighlighter_cx3dy")
 scroll_smooth = true
 caret_blink = true
 line_folding = true

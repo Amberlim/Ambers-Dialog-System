@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://cxp4cacjxxr8i"]
+[gd_scene load_steps=34 format=3 uid="uid://cxp4cacjxxr8i"]
 
 [ext_resource type="Texture2D" uid="uid://br3moe3r4b2jh" path="res://Assets/UI/MenuIcon.svg" id="1_lq43a"]
 [ext_resource type="Theme" uid="uid://thbfepb48rke" path="res://Assets/UI/GeneralTheme.tres" id="1_ogbra"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://FileDialog.gd" id="10_au6rp"]
 [ext_resource type="AudioStream" uid="uid://dmdl30ltmnjd5" path="res://Assets/Sound/Saved.wav" id="11_f7qac"]
 [ext_resource type="AudioStream" uid="uid://dcxs2au3nfiap" path="res://Assets/Sound/Drag.wav" id="12_82ngn"]
+[ext_resource type="AudioStream" uid="uid://rnv6gskto2wa" path="res://Assets/Sound/Error.wav" id="13_ertqb"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8behx"]
 
@@ -116,13 +117,6 @@ _data = {
 "RESET": SubResource("Animation_ndff8")
 }
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wr0lq"]
-bg_color = Color(0.682353, 0.592157, 0.384314, 1)
-corner_radius_top_left = 1000
-corner_radius_top_right = 1000
-corner_radius_bottom_right = 1000
-corner_radius_bottom_left = 1024
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_khc4p"]
 content_margin_left = 10.0
 content_margin_top = 5.0
@@ -168,9 +162,60 @@ corner_radius_top_right = 500
 corner_radius_bottom_right = 500
 corner_radius_bottom_left = 500
 
+[sub_resource type="Animation" id="Animation_hvwa5"]
+resource_name = "Jerk"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 0.5),
+"update": 0,
+"values": [Vector2(711, 300), Vector2(716, 300), Vector2(705, 300), Vector2(716, 300), Vector2(705, 300), Vector2(711, 300)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../NewFileDialog:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(711, 300), Vector2(716, 300), Vector2(703, 300), Vector2(716, 300), Vector2(703, 300), Vector2(711, 300)]
+}
+
+[sub_resource type="Animation" id="Animation_iwi2y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../NewFileDialog:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(716, 300)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i0kut"]
+_data = {
+"Jerk": SubResource("Animation_hvwa5"),
+"RESET": SubResource("Animation_iwi2y")
+}
+
 [node name="GraphEdit" type="GraphEdit"]
 custom_minimum_size = Vector2(1920, 1080)
 theme = ExtResource("1_ogbra")
+right_disconnects = true
 script = ExtResource("1_tip6a")
 metadata/_edit_vertical_guides_ = [962.0]
 metadata/_edit_horizontal_guides_ = [542.0]
@@ -296,14 +341,12 @@ offset_right = 40.2
 offset_bottom = 0.14003
 grow_vertical = 2
 mouse_filter = 1
-theme_override_styles/frame = SubResource("StyleBoxFlat_wr0lq")
-theme_override_styles/selected_frame = SubResource("StyleBoxFlat_wr0lq")
 position_offset = Vector2(193, 497.5)
 draggable = false
-slot/0/left_enabled = true
 
 [node name="Label" parent="Start" index="0"]
 size_flags_vertical = 6
+vertical_alignment = 1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -346,6 +389,7 @@ offset_right = 56.0
 offset_bottom = 123.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_default_cursor_shape = 2
 
 [node name="Label" type="Label" parent="CanvasLayer/Panel/MenuList"]
 layout_mode = 2
@@ -374,9 +418,26 @@ mouse_default_cursor_shape = 2
 text = "SAVE AS"
 
 [node name="Options" type="Button" parent="CanvasLayer/Panel/MenuList"]
+visible = false
 layout_mode = 2
 mouse_default_cursor_shape = 2
 text = "OPTIONS"
+
+[node name="Copyright" type="Label" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -168.5
+offset_top = -31.0
+offset_right = 168.5
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.101961, 0.364706, 0.447059, 1)
+text = "© Made with love and tears by Amber"
 
 [node name="CancelButton" type="TextureButton" parent="CanvasLayer/Panel"]
 layout_mode = 0
@@ -506,7 +567,7 @@ mouse_default_cursor_shape = 2
 theme = ExtResource("1_ogbra")
 text = "Save"
 
-[node name="SaveFileDialog" type="Panel" parent="CanvasLayer" node_paths=PackedStringArray("error_message")]
+[node name="SaveFileDialog" type="Panel" parent="CanvasLayer" node_paths=PackedStringArray("error_message", "file_exists", "jerk_anim", "error_sound", "notification_sound")]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
@@ -515,7 +576,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -249.0
 offset_top = -240.0
-offset_right = 251.0
+offset_right = 251.001
 offset_bottom = 260.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -526,6 +587,10 @@ cancel_button = NodePath("VBoxContainer/Buttons/Cancel")
 confirm_button = NodePath("VBoxContainer/Buttons/Save")
 back_button = NodePath("BackButton2")
 error_message = NodePath("Error")
+file_exists = NodePath("FileExists")
+jerk_anim = NodePath("JerkAnimation")
+error_sound = NodePath("../../ErrorSound")
+notification_sound = NodePath("../../NotificationSound")
 
 [node name="ColorRect2" type="ColorRect" parent="CanvasLayer/SaveFileDialog"]
 layout_mode = 0
@@ -547,6 +612,19 @@ offset_right = 399.0
 offset_bottom = 395.0
 theme_override_colors/font_color = Color(0.666667, 0.596078, 0.411765, 1)
 text = "ERROR: Insert a file name!"
+horizontal_alignment = 1
+
+[node name="FileExists" type="Label" parent="CanvasLayer/SaveFileDialog"]
+visible = false
+layout_mode = 2
+offset_left = 99.0
+offset_top = 370.0
+offset_right = 399.0
+offset_bottom = 395.0
+theme_override_colors/font_color = Color(0.666667, 0.596078, 0.411765, 1)
+text = "File exists already!
+Click SAVE again to 
+confirm overwrite."
 horizontal_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/SaveFileDialog"]
@@ -613,9 +691,10 @@ offset_bottom = 37.0
 mouse_default_cursor_shape = 2
 texture_normal = ExtResource("7_ld0r4")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/SaveFileDialog"]
-stream = ExtResource("11_f7qac")
-volume_db = -5.0
+[node name="JerkAnimation" type="AnimationPlayer" parent="CanvasLayer/SaveFileDialog"]
+libraries = {
+"": SubResource("AnimationLibrary_i0kut")
+}
 
 [node name="OpenFileDialog" type="FileDialog" parent="CanvasLayer"]
 title = "Open a File"
@@ -626,16 +705,16 @@ ok_button_text = "Open"
 file_mode = 0
 access = 1
 
-[node name="NewFileDialog" type="Panel" parent="CanvasLayer" node_paths=PackedStringArray("error_message")]
+[node name="NewFileDialog" type="Panel" parent="CanvasLayer" node_paths=PackedStringArray("error_message", "file_exists", "jerk_anim", "error_sound", "notification_sound")]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -249.0
+offset_left = -244.0
 offset_top = -240.0
-offset_right = 251.0
+offset_right = 256.0
 offset_bottom = 260.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -646,6 +725,10 @@ cancel_button = NodePath("VBoxContainer/Buttons/Cancel")
 confirm_button = NodePath("VBoxContainer/Buttons/Create")
 back_button = NodePath("BackButton")
 error_message = NodePath("Error")
+file_exists = NodePath("FileExists")
+jerk_anim = NodePath("../SaveFileDialog/JerkAnimation")
+error_sound = NodePath("../../ErrorSound")
+notification_sound = NodePath("../../NotificationSound")
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/NewFileDialog"]
 layout_mode = 0
@@ -657,6 +740,19 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0.0431373, 0.117647, 0.164706, 0.576471)
 metadata/_edit_lock_ = true
+
+[node name="FileExists" type="Label" parent="CanvasLayer/NewFileDialog"]
+visible = false
+layout_mode = 2
+offset_left = 99.0
+offset_top = 370.0
+offset_right = 399.0
+offset_bottom = 445.0
+theme_override_colors/font_color = Color(0.666667, 0.596078, 0.411765, 1)
+text = "File exists already!
+Click SAVE again to 
+confirm overwrite."
+horizontal_alignment = 1
 
 [node name="Error" type="Label" parent="CanvasLayer/NewFileDialog"]
 visible = false
@@ -735,6 +831,13 @@ texture_normal = ExtResource("7_ld0r4")
 
 [node name="SpawnSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("12_82ngn")
+
+[node name="ErrorSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_ertqb")
+
+[node name="NotificationSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_f7qac")
+volume_db = -5.0
 
 [connection signal="connection_request" from="." to="." method="_on_connection_request"]
 [connection signal="disconnection_request" from="." to="." method="_on_disconnection_request"]

@@ -8,7 +8,12 @@ var rng = RandomNumberGenerator.new()
 
 
 # Keep Count
-var dialog_node_count = 0
+var total_node_count = 0
+var dialog_count = 0
+var feature_count = 0
+var option_count = 0
+var end_count = 0
+
 
 # Data
 var dialog = {}
@@ -25,6 +30,16 @@ func _input(event):
 		_on_new_node_pressed()
 	elif Input.is_action_pressed("Return to Start"):
 		scroll_offset = Vector2(-200, -40)
+	elif Input.is_action_pressed("Go to End"):
+		if has_node("End"):
+			var end = $End
+			var pos_x = end.position.x
+			pos_x = pos_x * -1
+			var pos_y = end.position.y
+			pos_y = pos_y * -0.02
+			scroll_offset = Vector2(pos_x, pos_y)
+	elif Input.is_action_pressed("New File"):
+		_on_new_pressed()
 	elif Input.is_action_just_pressed("New Feature"):
 		_on_new_feature_pressed()
 	elif Input.is_action_pressed("Open"):
@@ -40,7 +55,6 @@ func _input(event):
 
 func random_number():
 	return rng.randf_range(1, 1.5)
-
 	
 ################## Creating a new node ####################################
 func _on_new_node_pressed(open_save : bool = false):
@@ -51,15 +65,19 @@ func _on_new_node_pressed(open_save : bool = false):
 	var new_node = load("res://GraphNode.tscn")
 	new_node = new_node.instantiate()
 	
-	dialog_node_count += 1
-	new_node.title = "DIALOG_" + str(dialog_node_count)
-	new_node.name = "DIALOG_" + str(dialog_node_count)
+	update_node_count(1, 1)
+	
+	new_node.title = "DIALOG_" + str(dialog_count)
+	new_node.name = "DIALOG_" + str(dialog_count)
 	new_node.node_data["node title"] = new_node.name
 	
 	if not open_save:
 		if last_instanced_node == null:
 			last_instanced_node = $Start
 		new_node.position_offset = last_instanced_node.position_offset + Vector2(500,10)
+	
+	# Connect first dialog node to START
+	auto_connect_start(new_node.name) 
 	
 	last_instanced_node = new_node
 	
@@ -77,8 +95,10 @@ func _on_new_feature_pressed(open_save : bool = false):
 	new_feature = new_feature.instantiate()
 	add_child(new_feature)
 	
-	new_feature.title = "FEATURE_" + str(dialog_node_count)
-	new_feature.name = "FEATURE_" + str(dialog_node_count)
+	update_node_count(1, 0, 1)
+	
+	new_feature.title = "FEATURE_" + str(feature_count)
+	new_feature.name = "FEATURE_" + str(feature_count)
 	new_feature.node_data["node title"] = new_feature.title
 	
 	if not open_save:
@@ -86,6 +106,9 @@ func _on_new_feature_pressed(open_save : bool = false):
 			last_instanced_node = $Start
 		new_feature.position_offset = last_instanced_node.position_offset + Vector2(500,10)
 	
+	# Connect first dialog node to START
+	auto_connect_start(new_feature.name) 
+		
 	last_instanced_node = new_feature
 	
 ################## Creating a new option ####################################
@@ -96,32 +119,41 @@ func _on_new_option_pressed(open_save : bool = false):
 	var new_option = load("res://Option.tscn")
 	new_option = new_option.instantiate()
 	
-	dialog_node_count += 1
-	new_option.title = "OPTION_" + str(dialog_node_count)
-	new_option.name = "OPTION_" + str(dialog_node_count)
+	update_node_count(1,0,0,1)
+	
+	new_option.title = "OPTION_" + str(option_count)
+	new_option.name = "OPTION_" + str(option_count)
 	new_option.node_data["node title"] = new_option.name
+
 	
 	if not open_save:
 		if last_instanced_node == null:
 			last_instanced_node = $Start
 		new_option.position_offset = last_instanced_node.position_offset + Vector2(350,10)
-	
+			
+	# Connect first dialog node to START
+	auto_connect_start(new_option.name) 
+			
 	last_instanced_node = new_option
 	
 	add_child(new_option)
  
 ################## Ending the dialog ####################################
 func _on_end_node_pressed():
-	spawn_sound.pitch_scale = random_number()
-	spawn_sound.play()
-	
-	var end_node = load("res://End.tscn")
-	end_node = end_node.instantiate()
-	add_child(end_node)
-	
-	end_node.position_offset = last_instanced_node.position_offset + Vector2(500,10)
-	
-	last_instanced_node = end_node
+	if end_count == 0: 
+		
+		end_count += 1
+		
+		spawn_sound.pitch_scale = random_number()
+		spawn_sound.play()
+		
+		var end_node = load("res://End.tscn")
+		end_node = end_node.instantiate()
+		add_child(end_node)
+		
+		end_node.position_offset = last_instanced_node.position_offset + Vector2(500,10)
+		
+		last_instanced_node = end_node
 
 
 
@@ -178,48 +210,47 @@ func _on_file_dialog_file_selected(path):
 			current_node.position_offset.x = node["offset_x"]
 			current_node.position_offset.y = node["offset_y"]
 			
-			var node_data = current_node.node_data
-			
 			# variable
-			if not node_data["variables"].is_empty():
+			if not node["variables"].is_empty():
 				var variables_group = current_node.get_node("VariablesGroup")
 				variables_group.show()
 				
-				for variable_set in node_data["variables"]:
+				for variable_set in node["variables"]:
 					current_node._on_add_button_pressed("variable")
 					
 					var current_variable_count = current_node.variable_count
 					var variable_node_name = "Variable" + str(current_variable_count)
 					var variable_node = variables_group.get_node(variable_node_name)
-					variable_node.text = node["variables"].keys()[current_variable_count]
-					variable_node.active = node["variables"].values()[current_variable_count]
+					variable_node.text.text = node["variables"].keys()[current_variable_count - 1]
+					variable_node.check_button.button_pressed = 	node["variables"].values()[current_variable_count - 1]
 			
 			# signals
-			if not node_data["signals"].is_empty():
+			if not node["signals"].is_empty():
 				var emit_signal_group = current_node.get_node("EmitSignalGroup")
 				emit_signal_group.show()
 				
-				for single_signal in node_data["signals"]:
+				for single_signal in node["signals"]:
 					current_node._on_add_button_pressed("signal")
 					
 					var current_signal_count = current_node.signal_count
 					var signal_node_name = "Signal" + str(current_signal_count)
 					var signal_node = emit_signal_group.get_node(signal_node_name)
-					signal_node.text = node["signals"][current_signal_count]
+					signal_node.text.text = node["signals"][current_signal_count - 1]
 			
 			# conditionals
-			if not node_data["conditionals"].is_empty():
+			if not node["conditionals"].is_empty():
+
 				var conditionals_group = current_node.get_node("ConditionalsGroup")
 				conditionals_group.show()
 				
-				for conditional in node_data["conditionals"]:
+				for conditional in node["conditionals"]:
 					current_node._on_add_button_pressed("conditional")
 					
 					var current_conditional_count = current_node.conditional_count
-					var conditional_node_name = "Variable" + str(current_conditional_count)
+					var conditional_node_name = "Conditional" + str(current_conditional_count)
 					var conditional_node = conditionals_group.get_node(conditional_node_name)
-					conditional_node.text = node["variables"].keys()[current_conditional_count]
-					conditional_node.active = node["variables"].values()[current_conditional_count]
+					conditional_node.text.text = node["conditionals"].keys()[current_conditional_count - 1]
+					conditional_node.check_button.button_pressed = node["conditionals"].values()[current_conditional_count - 1]
 			
 		# if type: option
 		elif "OPTION" in node["node title"]:
@@ -231,8 +262,13 @@ func _on_file_dialog_file_selected(path):
 			current_node.text.text = node["text"]
 		
 		# Link Connections
-		for to in node["go to"]:
-			connect_node(node["node title"], 0, to, 0)
+		if "End" in node["go to"]:
+			_on_end_node_pressed()
+			connect_node(node["node title"], 0, "End", 0)
+		else:
+			for to in node["go to"]:
+				connect_node(node["node title"], 0, to, 0)
+		
 		
 	
 ################## Save a file ####################################
@@ -313,7 +349,6 @@ func _on_font_size_pressed(font_size):
 func _on_type_sound_pressed(index):
 	new_type_sound = index
 	
-
 func _on_new_pressed():
 	new_file_dialog.show()
 
@@ -322,15 +357,33 @@ func _on_new_pressed():
 ################## Connecting Nodes ####################################
 func _on_connection_request(from_node, from_port, to_node, to_port):
 	connect_node(from_node, from_port, to_node, to_port)
-	get_node(str(from_node)).node_data["go to"].append(to_node)
+	if from_node != "Start":
+		get_node(str(from_node)).node_data["go to"].append(to_node)
 
 func _on_disconnection_request(from_node, from_port, to_node, to_port):
 	disconnect_node(from_node, from_port, to_node, to_port)
-	get_node(str(from_node)).node_data["go to"].remove(to_node)
+	get_node(str(from_node)).node_data["go to"].erase(to_node)
 
 func clear_all():
+	clear_connections()
 	for node in get_tree().get_nodes_in_group("nodes"):
 		node.queue_free()
-	dialog_node_count = 0
+	clear_node_count()
 	graph_cleared.emit()
+	
+func auto_connect_start(node):
+	if total_node_count == 1:
+		connect_node("Start", 0, node, 0)
 		
+################## Tracking Node Count ####################################
+func update_node_count(total = 0, dialog = 0, feature = 0, option = 0):
+	total_node_count += total
+	dialog_count += dialog
+	feature_count += feature
+	option_count += option
+	
+func clear_node_count():
+	total_node_count += 0
+	dialog_count += 0
+	feature_count += 0
+	option_count += 0

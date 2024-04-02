@@ -5,11 +5,12 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ca652"]
 
-[node name="Variable" type="HBoxContainer" node_paths=PackedStringArray("text")]
+[node name="Variable" type="HBoxContainer" node_paths=PackedStringArray("text", "check_button")]
 offset_right = 300.0
 offset_bottom = 37.0
 script = ExtResource("1_dtonv")
 text = NodePath("LineEdit")
+check_button = NodePath("CheckButton")
 
 [node name="LineEdit" type="LineEdit" parent="."]
 layout_mode = 2

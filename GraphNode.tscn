@@ -14,23 +14,23 @@ offset_right = 0.319979
 offset_bottom = 0.199985
 mouse_default_cursor_shape = 6
 theme_override_constants/separation = 10
-title = "GramercyHeights"
+title = "NodeTitle"
 show_close = true
 resizable = true
-slot/0/left_enabled = false
+slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
 slot/0/left_icon = null
-slot/0/right_enabled = false
+slot/0/right_enabled = true
 slot/0/right_type = 0
 slot/0/right_color = Color(1, 1, 1, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
-slot/1/left_enabled = true
+slot/1/left_enabled = false
 slot/1/left_type = 0
 slot/1/left_color = Color(1, 1, 1, 1)
 slot/1/left_icon = null
-slot/1/right_enabled = true
+slot/1/right_enabled = false
 slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
@@ -115,19 +115,12 @@ text = "Text"
 custom_minimum_size = Vector2(2.08165e-12, 200)
 layout_mode = 2
 size_flags_vertical = 3
-tooltip_text = "Press ENTER to break apart the dialog the same 
-character is talking but on a new line.
-Line breaks in JSON code will be shown as /n.
-
-Use <<$expression>> in text to change expression."
+tooltip_text = "Type <<expression_name>> to change expressions.
+Type # to comment.
+ENTER for a line break. Same character talking."
 theme_override_colors/background_color = Color(0, 0, 0, 0)
 text = ""
 placeholder_text = "Character dialog goes here... 
-
-Use <<$expression_name>> to change expressions.
-
-Press ENTER to break dialog (if the character is still the same).
-
 "
 scroll_v_scroll_speed = 90.0
 scroll_fit_content_height = true

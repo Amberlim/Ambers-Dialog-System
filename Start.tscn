@@ -2,8 +2,8 @@
 
 [node name="Start" type="GraphNode"]
 custom_minimum_size = Vector2(20, 20)
-offset_right = 92.0
-offset_bottom = 85.0
+offset_right = 84.0
+offset_bottom = 80.0
 slot/0/left_enabled = false
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)
