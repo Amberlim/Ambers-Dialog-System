@@ -21,10 +21,11 @@ keyword_colors = {
 "scream": Color(0.694118, 0.345098, 1, 1)
 }
 color_regions = {
-"//": Color(1, 1, 1, 0.423529)
+"<< >>": Color(0.141176, 0.698039, 0.584314, 1),
+"| |": Color(0.956863, 0, 0, 1)
 }
 
-[node name="Option" type="GraphNode" groups=["nodes"]]
+[node name="Option" type="GraphNode" groups=["OPTION", "nodes"]]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

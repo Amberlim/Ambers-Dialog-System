@@ -6,7 +6,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_03hav"]
 
-[node name="GraphNode" type="GraphNode" groups=["nodes"]]
+[node name="GraphNode" type="GraphNode" groups=["DIALOG", "nodes"]]
 anchors_preset = -1
 anchor_right = 0.204
 anchor_bottom = 0.235
@@ -69,11 +69,11 @@ by going to the inspector in GraphNode.tscn
 (Character > Character > OptionButton).
 "
 item_count = 3
-popup/item_0/text = "Mum"
+popup/item_0/text = "Owl"
 popup/item_0/id = 0
-popup/item_1/text = "Happy"
+popup/item_1/text = "Player"
 popup/item_1/id = 1
-popup/item_2/text = "Uncle"
+popup/item_2/text = "Cat"
 popup/item_2/id = 2
 
 [node name="LineAsset" type="VBoxContainer" parent="."]
@@ -93,7 +93,8 @@ text = "Line Asset "
 
 [node name="LineEdit" type="LineEdit" parent="LineAsset"]
 layout_mode = 2
-tooltip_text = "Useful for attaching voice acting file (as a string)."
+tooltip_text = "Useful for attaching voice acting file (as a string).
+Separate files by comma."
 placeholder_text = "optional"
 
 [node name="Text" type="VBoxContainer" parent="."]
@@ -115,9 +116,6 @@ text = "Text"
 custom_minimum_size = Vector2(2.08165e-12, 200)
 layout_mode = 2
 size_flags_vertical = 3
-tooltip_text = "Type <<expression_name>> to change expressions.
-Type # to comment.
-ENTER for a line break. Same character talking."
 theme_override_colors/background_color = Color(0, 0, 0, 0)
 text = ""
 placeholder_text = "Character dialog goes here... 

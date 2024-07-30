@@ -6,7 +6,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p5ccu"]
 
-[node name="Feature" type="GraphNode" groups=["nodes"]]
+[node name="Feature" type="GraphNode" groups=["FEATURE", "nodes"]]
 anchors_preset = -1
 anchor_top = -0.209259
 anchor_bottom = -0.209259
@@ -149,9 +149,9 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_p5ccu")
 icon = ExtResource("5_upf7y")
 
 [connection signal="_cancel_button_pressed" from="." to="." method="_on_cancel_button_pressed"]
-[connection signal="close_request" from="." to="." method="_on_close_request" flags=18]
-[connection signal="resize_request" from="." to="." method="_on_resize_request" flags=18]
-[connection signal="slot_updated" from="." to="." method="_on_slot_updated" flags=18]
+[connection signal="close_request" from="." to="." method="_on_close_request"]
+[connection signal="dragged" from="." to="." method="_on_dragged"]
+[connection signal="resize_request" from="." to="." method="_on_resize_request"]
 [connection signal="item_selected" from="Feature/OptionButton" to="." method="_on_option_button_item_selected"]
 [connection signal="pressed" from="VariablesGroup/Title/AddVarButton" to="." method="_on_add_button_pressed" binds= ["variable"]]
 [connection signal="pressed" from="EmitSignalGroup/Title/AddSignalButton" to="." method="_on_add_button_pressed" binds= ["signal"]]

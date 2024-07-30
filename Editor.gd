@@ -1,7 +1,7 @@
 extends GraphEdit
 
 # Get nodes
-@onready var last_instanced_node = $Start
+var last_instanced_node_pos = Vector2(0,0)
 @onready var saved_notification = $Tool/SavedNotification
 @onready var spawn_sound = $SpawnSound
 var rng = RandomNumberGenerator.new()
@@ -13,6 +13,7 @@ var dialog_count = 0
 var feature_count = 0
 var option_count = 0
 var end_count = 0
+var new_nodes_position_offset = Vector2(450,0)
 
 
 # Data
@@ -20,6 +21,7 @@ var dialog = {}
 
 # Signals
 signal graph_cleared
+signal node_closed
 
 
 
@@ -27,6 +29,7 @@ signal graph_cleared
 	
 func _input(event):
 	if Input.is_action_pressed("New Node"):
+		last_instanced_node_pos = get_global_mouse_position() - new_nodes_position_offset
 		_on_new_node_pressed()
 	elif Input.is_action_pressed("Return to Start"):
 		scroll_offset = Vector2(-200, -40)
@@ -41,6 +44,7 @@ func _input(event):
 	elif Input.is_action_pressed("New File"):
 		_on_new_pressed()
 	elif Input.is_action_just_pressed("New Feature"):
+		last_instanced_node_pos = get_global_mouse_position() - new_nodes_position_offset
 		_on_new_feature_pressed()
 	elif Input.is_action_pressed("Open"):
 		$CanvasLayer/OpenFileDialog.show()
@@ -61,65 +65,63 @@ func _on_new_node_pressed(open_save : bool = false):
 	
 	spawn_sound.pitch_scale = random_number()
 	spawn_sound.play()
+
+	update_node_count(1, 1)
 	
 	var new_node = load("res://GraphNode.tscn")
 	new_node = new_node.instantiate()
 	
-	update_node_count(1, 1)
-	
 	new_node.title = "DIALOG_" + str(dialog_count)
 	new_node.name = "DIALOG_" + str(dialog_count)
-	new_node.node_data["node title"] = new_node.name
+	new_node.node_data["node title"] =  "DIALOG_" + str(dialog_count)
 	
+		
 	if not open_save:
-		if last_instanced_node == null:
-			last_instanced_node = $Start
-		new_node.position_offset = last_instanced_node.position_offset + Vector2(500,10)
-	
+		if last_instanced_node_pos == Vector2(0,0):
+			last_instanced_node_pos = $Start.position_offset
+		new_node.position_offset = last_instanced_node_pos + new_nodes_position_offset
+			
 	# Connect first dialog node to START
 	auto_connect_start(new_node.name) 
 	
-	last_instanced_node = new_node
+	last_instanced_node_pos = new_node.position_offset
 	
 	add_child(new_node)
-	
-	
-	
 	
 ################## Creating a new feature ####################################
 func _on_new_feature_pressed(open_save : bool = false):
 	spawn_sound.pitch_scale = random_number()
 	spawn_sound.play()
 	
+	update_node_count(1, 0, 1)
+	
 	var new_feature = load("res://Feature.tscn")
 	new_feature = new_feature.instantiate()
 	add_child(new_feature)
-	
-	update_node_count(1, 0, 1)
 	
 	new_feature.title = "FEATURE_" + str(feature_count)
 	new_feature.name = "FEATURE_" + str(feature_count)
 	new_feature.node_data["node title"] = new_feature.title
 	
 	if not open_save:
-		if last_instanced_node == null:
-			last_instanced_node = $Start
-		new_feature.position_offset = last_instanced_node.position_offset + Vector2(500,10)
+		if last_instanced_node_pos == Vector2(0,0):
+			last_instanced_node_pos = $Start.position_offset
+		new_feature.position_offset = last_instanced_node_pos + new_nodes_position_offset 
 	
 	# Connect first dialog node to START
 	auto_connect_start(new_feature.name) 
 		
-	last_instanced_node = new_feature
+	last_instanced_node_pos = new_feature.position_offset
 	
 ################## Creating a new option ####################################
 func _on_new_option_pressed(open_save : bool = false):
 	spawn_sound.pitch_scale = random_number()
 	spawn_sound.play()
 	
+	update_node_count(1,0,0,1)
+	
 	var new_option = load("res://Option.tscn")
 	new_option = new_option.instantiate()
-	
-	update_node_count(1,0,0,1)
 	
 	new_option.title = "OPTION_" + str(option_count)
 	new_option.name = "OPTION_" + str(option_count)
@@ -127,14 +129,14 @@ func _on_new_option_pressed(open_save : bool = false):
 
 	
 	if not open_save:
-		if last_instanced_node == null:
-			last_instanced_node = $Start
-		new_option.position_offset = last_instanced_node.position_offset + Vector2(350,10)
+		if last_instanced_node_pos == Vector2(0,0):
+			last_instanced_node_pos = $Start.position_offset
+		new_option.position_offset = last_instanced_node_pos + new_nodes_position_offset
 			
 	# Connect first dialog node to START
 	auto_connect_start(new_option.name) 
 			
-	last_instanced_node = new_option
+	last_instanced_node_pos = new_option.position_offset
 	
 	add_child(new_option)
  
@@ -151,11 +153,9 @@ func _on_end_node_pressed():
 		end_node = end_node.instantiate()
 		add_child(end_node)
 		
-		end_node.position_offset = last_instanced_node.position_offset + Vector2(500,10)
+		end_node.position_offset = last_instanced_node_pos + new_nodes_position_offset
 		
-		last_instanced_node = end_node
-
-
+		last_instanced_node_pos = end_node.position_offset
 
 
 ################## Open file ####################################
@@ -381,9 +381,18 @@ func update_node_count(total = 0, dialog = 0, feature = 0, option = 0):
 	dialog_count += dialog
 	feature_count += feature
 	option_count += option
+	print("dialog count: " + str(dialog_count))
 	
 func clear_node_count():
 	total_node_count += 0
 	dialog_count += 0
 	feature_count += 0
 	option_count += 0
+
+func update_node_name(prefix, number):
+	var node = get_node(prefix + str(number))
+	var new_number = number - 1
+	var new_name = prefix + str(new_number)
+	node.name =  prefix + str(new_number)
+	node.title =  prefix + str(new_number)
+	node.node_data["node title"] =  prefix + str(new_number)
