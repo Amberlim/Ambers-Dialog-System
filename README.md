@@ -1,6 +1,6 @@
-<h1>A Godot dialog system that converts your story into a JSON file.</h1>
+<h1>A simple Godot 4+ dialog system that converts your story into a JSON file.</h1>
+<h5>A non-bulky dialog editor made to make the process of writing game dialog more satisfying.</h5>
 
-<h5>CURRENTLY SUPPORTING GODOT 4+</h5>
 
 <h3>👋 Quick Start</h3>
 <ol>
