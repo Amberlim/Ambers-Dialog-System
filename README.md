@@ -6,6 +6,7 @@
 <ol>
   <li>Open the project.gd file.</li>
   <li>Run the project!</li>
+  <li>Optional: Video walkthrough at https://youtu.be/JIwYuWNe670</li>
 </ol>
 
 <h3>🗒️ Syntax</h3>
@@ -19,10 +20,12 @@
 </ul>
 
 <h3>🐛 Existing Bugs</h3>
-1. Deleting consecutively nodes can confuse the editor and cause problems when you want to open the file next time.
-2. Syntax colours sometimes mess up.
-3. Sometimes connections to link properly (especially when opening old files).
-4. Crashes when creating a new file/opening an old file when another file is already open.
+<ul>
+  <li>Deleting consecutively nodes can confuse the editor and cause problems when you want to open the file next time.</li>
+  <li>Syntax colours sometimes mess up.</li>
+  <li>Sometimes connections to link properly (especially when opening old files).</li>
+  <li>Crashes when creating a new file/opening an old file when another file is already open.</li>
+</ul>
 
 <h3>😄 Share with us!</h3>
 If you use it in your project, we would love to see! :D
