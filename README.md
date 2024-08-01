@@ -23,8 +23,19 @@
 <ul>
   <li>Deleting consecutively nodes can confuse the editor and cause problems when you want to open the file next time.</li>
   <li>Syntax colours sometimes mess up.</li>
-  <li>Sometimes connections to link properly (especially when opening old files).</li>
+  <li>Sometimes connections doesn't link properly (especially when opening old files).</li>
   <li>Crashes when creating a new file/opening an old file when another file is already open.</li>
+</ul>
+
+<h3>🔑 Shortcut Keys</h3>
+<ul>
+  <li>Go back to Start <code>Cmd/Ctrl + 0</code></li>
+  <li>New node <code>Right mouse click</code></li>
+  <li>New feature <code>Option + F</code></li>
+  <li>Go to End <code>Cmd/Ctrl + E</code></li>
+   <li>New file <code>Cmd/Ctrl + N</code></li>
+   <li>Open file <code>Cmd/Ctrl + O</code></li>
+   <li>Save file <code>Cmd/Ctrl + S</code></li>
 </ul>
 
 <h3>😄 Share with us!</h3>
