@@ -68,13 +68,17 @@ tooltip_text = "You can add or change character names
 by going to the inspector in GraphNode.tscn 
 (Character > Character > OptionButton).
 "
-item_count = 3
+item_count = 5
 popup/item_0/text = "Owl"
 popup/item_0/id = 0
 popup/item_1/text = "Player"
 popup/item_1/id = 1
 popup/item_2/text = "Cat"
 popup/item_2/id = 2
+popup/item_3/text = "Sheriff"
+popup/item_3/id = 3
+popup/item_4/text = "Archaeologist"
+popup/item_4/id = 4
 
 [node name="LineAsset" type="VBoxContainer" parent="."]
 layout_mode = 2

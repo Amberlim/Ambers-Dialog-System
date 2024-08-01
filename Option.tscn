@@ -22,7 +22,7 @@ keyword_colors = {
 }
 color_regions = {
 "<< >>": Color(0.141176, 0.698039, 0.584314, 1),
-"| |": Color(0.956863, 0, 0, 1)
+"| |": Color(0.729412, 0.392157, 1, 1)
 }
 
 [node name="Option" type="GraphNode" groups=["OPTION", "nodes"]]
