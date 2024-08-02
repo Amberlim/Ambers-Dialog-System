@@ -62,6 +62,13 @@ func _input(event):
 func random_number():
 	return rng.randf_range(1, 1.5)
 
+
+func update_node_count():
+	var node_count = 0
+	for key in node_stack.keys():
+		node_count = node_count + len(node_stack[ key ].nodes)
+	total_node_count = node_count
+
 func get_new_node(type:String):
 	var new_node = node_stack[type].res.instantiate()
 	node_stack[ type ].last_index = node_stack[ type ].last_index + 1
@@ -70,16 +77,15 @@ func get_new_node(type:String):
 	new_node.name = new_name
 	new_node.node_data["node title"] =  new_name
 	node_stack[ type ].nodes.push_back(new_node)
-	var node_count = 0
 	var bounds:Vector2 = Vector2(0, 0)
 	for key in node_stack.keys():
-		node_count = node_count + len(node_stack[ key ].nodes)
 		for node in node_stack[ key ].nodes:
 			if node.position_offset.x > bounds.x:
 				bounds.x = node.position_offset.x
 			if node.position_offset.y > bounds.y:
 				bounds.y = node.position_offset.y
 	last_instanced_node_pos = bounds
+	update_node_count()
 	return new_node
 
 
@@ -92,6 +98,7 @@ func remove_node(node:Node):
 		else:
 			node_stack[ type ].nodes.remove_at(index)
 			node.queue_free()
+			update_node_count()
 	else:
 		push_error("Node type not found (" + type + ")")
 
