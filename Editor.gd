@@ -9,15 +9,17 @@ var rng = RandomNumberGenerator.new()
 
 # Keep Count
 var total_node_count = 0
-var dialog_count = 0
-var feature_count = 0
-var option_count = 0
 var end_count = 0
 var new_nodes_position_offset = Vector2(450,0)
 
 
 # Data
 var dialog = {}
+var node_stack:Dictionary = {
+	"DIALOG":  { "nodes": [], "last_index": 0, "res": load("res://GraphNode.tscn") },
+	"FEATURE": { "nodes": [], "last_index": 0, "res": load("res://Feature.tscn") },
+	"OPTION":  { "nodes": [], "last_index": 0, "res": load("res://Option.tscn") }
+}
 
 # Signals
 signal graph_cleared
@@ -59,23 +61,42 @@ func _input(event):
 
 func random_number():
 	return rng.randf_range(1, 1.5)
-	
+
+func get_new_node(type:String):
+	var new_node = node_stack[type].res.instantiate()
+	node_stack[ type ].last_index = node_stack[ type ].last_index + 1
+	var new_name = type + "_" +str(node_stack[ type ].last_index)
+	new_node.title =  new_name
+	new_node.name = new_name
+	new_node.node_data["node title"] =  new_name
+	node_stack[ type ].nodes.push_back(new_node)
+	var node_count = 0
+	for key in node_stack.keys():
+		node_count = node_count + len(node_stack[ key ].nodes)
+	return new_node
+
+
+func remove_node(node:Node):
+	var type = node.get_name().split("_")[0]
+	if node_stack.has(type):
+		var index = node_stack[ type ].nodes.find(node)
+		if index == -1:
+			push_error("Node not found on stack (" + str(node.get_path()) + ")")
+		else:
+			node_stack[ type ].nodes.remove_at(index)
+			node.queue_free()
+	else:
+		push_error("Node type not found (" + type + ")")
+
+
 ################## Creating a new node ####################################
 func _on_new_node_pressed(open_save : bool = false):
 	
 	spawn_sound.pitch_scale = random_number()
 	spawn_sound.play()
 
-	update_node_count(1, 1)
-	
-	var new_node = load("res://GraphNode.tscn")
-	new_node = new_node.instantiate()
-	
-	new_node.title = "DIALOG_" + str(dialog_count)
-	new_node.name = "DIALOG_" + str(dialog_count)
-	new_node.node_data["node title"] =  "DIALOG_" + str(dialog_count)
-	
-		
+	var new_node = get_new_node("DIALOG")
+
 	if not open_save:
 		if last_instanced_node_pos == Vector2(0,0):
 			last_instanced_node_pos = $Start.position_offset
@@ -93,15 +114,7 @@ func _on_new_feature_pressed(open_save : bool = false):
 	spawn_sound.pitch_scale = random_number()
 	spawn_sound.play()
 	
-	update_node_count(1, 0, 1)
-	
-	var new_feature = load("res://Feature.tscn")
-	new_feature = new_feature.instantiate()
-	add_child(new_feature)
-	
-	new_feature.title = "FEATURE_" + str(feature_count)
-	new_feature.name = "FEATURE_" + str(feature_count)
-	new_feature.node_data["node title"] = new_feature.title
+	var new_feature = get_new_node("FEATURE")
 	
 	if not open_save:
 		if last_instanced_node_pos == Vector2(0,0):
@@ -118,14 +131,7 @@ func _on_new_option_pressed(open_save : bool = false):
 	spawn_sound.pitch_scale = random_number()
 	spawn_sound.play()
 	
-	update_node_count(1,0,0,1)
-	
-	var new_option = load("res://Option.tscn")
-	new_option = new_option.instantiate()
-	
-	new_option.title = "OPTION_" + str(option_count)
-	new_option.name = "OPTION_" + str(option_count)
-	new_option.node_data["node title"] = new_option.name
+	var new_option = get_new_node("OPTION")
 
 	
 	if not open_save:
@@ -366,33 +372,13 @@ func _on_disconnection_request(from_node, from_port, to_node, to_port):
 
 func clear_all():
 	clear_connections()
-	for node in get_tree().get_nodes_in_group("nodes"):
-		node.queue_free()
-	clear_node_count()
+	for type in node_stack.keys():
+		for node in node_stack[type].nodes:
+			node.queue_free()
+		node_stack[ type ].last_index = 0
+	total_node_count = 0
 	graph_cleared.emit()
-	
+
 func auto_connect_start(node):
 	if total_node_count == 1:
 		connect_node("Start", 0, node, 0)
-		
-################## Tracking Node Count ####################################
-func update_node_count(total = 0, dialog = 0, feature = 0, option = 0):
-	total_node_count += total
-	dialog_count += dialog
-	feature_count += feature
-	option_count += option
-	print("dialog count: " + str(dialog_count))
-	
-func clear_node_count():
-	total_node_count += 0
-	dialog_count += 0
-	feature_count += 0
-	option_count += 0
-
-func update_node_name(prefix, number):
-	var node = get_node(prefix + str(number))
-	var new_number = number - 1
-	var new_name = prefix + str(new_number)
-	node.name =  prefix + str(new_number)
-	node.title =  prefix + str(new_number)
-	node.node_data["node title"] =  prefix + str(new_number)
