@@ -97,6 +97,10 @@ func remove_node(node:Node):
 			push_error("Node not found on stack (" + str(node.get_path()) + ")")
 		else:
 			node_stack[ type ].nodes.remove_at(index)
+			var node_name = node.get_name()
+			for connection in get_connection_list():
+				if connection.from == node_name or connection.to == node_name:
+					disconnect_node(connection.from, connection.from_port, connection.to, connection.to_port)
 			node.queue_free()
 			update_node_count()
 	else:
