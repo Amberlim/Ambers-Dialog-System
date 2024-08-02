@@ -72,12 +72,16 @@ func random_number():
 func update_node_count():
 	var node_count = 0
 	var single_node = null
+
 	for key in node_stack.keys():
 		var type_node_count = len(node_stack[ key ].nodes)
 		node_count = node_count + type_node_count
+
 		if type_node_count == 1:
 			single_node = node_stack[ key ].nodes[0].get_name()
+
 	total_node_count = node_count
+
 	# single_node is implicit by count but still good practice to declare in statement
 	if total_node_count == 1 and single_node:
 		auto_connect_start(single_node)
@@ -87,9 +91,11 @@ func update_node_count():
 func get_new_node(type:String, _node_name:String = ""):
 	var new_node = node_stack[type].res.instantiate()
 	node_stack[ type ].last_index = node_stack[ type ].last_index + 1
+
 	var new_name = type + "_" +str(node_stack[ type ].last_index)
 	if _node_name != "":
 		new_name = _node_name
+
 	new_node.title =  new_name
 	new_node.name = new_name
 	new_node.node_data["node title"] =  new_name
@@ -104,8 +110,10 @@ func get_new_node(type:String, _node_name:String = ""):
 			if node.position_offset.y > bounds.y:
 				bounds.y = node.position_offset.y
 	last_instanced_node_pos = bounds
+
 	add_child(new_node)
 	update_node_count()
+
 	return new_node
 
 # Called from child only, passes itself and lets GraphEdit handle the removal
@@ -114,14 +122,17 @@ func remove_node(node:Node):
 	var type = node.get_name().split("_")[0]
 	if node_stack.has(type):
 		var index = node_stack[ type ].nodes.find(node)
+
 		if index == -1:
 			push_error("Node not found on stack (" + str(node.get_path()) + ")")
 		else:
 			node_stack[ type ].nodes.remove_at(index)
+
 			var node_name = node.get_name()
 			for connection in get_connection_list():
 				if connection.from == node_name or connection.to == node_name:
 					disconnect_node(connection.from, connection.from_port, connection.to, connection.to_port)
+
 			node.queue_free()
 			update_node_count()
 	else:
@@ -186,7 +197,6 @@ func _on_end_node_pressed():
 ################## Open file ####################################
 	
 func _on_file_dialog_file_selected(path):
-	print(path)
 	selected_file_path = path
 
 func _on_file_dialog_load_file():
