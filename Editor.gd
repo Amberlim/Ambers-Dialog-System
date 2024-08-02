@@ -132,7 +132,6 @@ func remove_node(node:Node):
 			for connection in get_connection_list():
 				if connection.from == node_name or connection.to == node_name:
 					disconnect_node(connection.from, connection.from_port, connection.to, connection.to_port)
-
 			node.queue_free()
 			update_node_count()
 	else:
@@ -200,6 +199,8 @@ func _on_file_dialog_file_selected(path):
 	selected_file_path = path
 
 func _on_file_dialog_load_file():
+	# Change window title
+	get_window().title = selected_file_path.get_file().replace(".json", "")
 	# Make sure the listener runs before the emitter
 	_on_file_dialog_load_file_async() # Start the async function waiting for the signal
 	clear_all() # Run the function that emits the signal expected
@@ -213,8 +214,6 @@ func _on_file_dialog_load_file_async():
 	var file = FileAccess.open(selected_file_path,FileAccess.READ)
 	var dialog = JSON.parse_string(file.get_as_text())
 	
-	# Change window title
-	get_window().title = selected_file_path.get_file().replace(".json", "")
 	
 	# Assign nodes into/with correct positions and values
 	# Nodes (incl. start & end nodes)
@@ -408,6 +407,8 @@ func clear_all():
 		for node in node_stack[type].nodes:
 			node.queue_free()
 		node_stack[ type ].last_index = 0
+		node_stack[type].nodes = []
+	await get_tree().create_timer(0.05).timeout
 	total_node_count = 0
 	graph_cleared.emit()
 
