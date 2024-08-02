@@ -62,6 +62,7 @@ func _input(event):
 func random_number():
 	return rng.randf_range(1, 1.5)
 
+################## Life cycle methods  ####################################
 # Called when a node is either created or removed
 func update_node_count():
 	var node_count = 0
@@ -70,10 +71,10 @@ func update_node_count():
 		var type_node_count = len(node_stack[ key ].nodes)
 		node_count = node_count + type_node_count
 		if type_node_count == 1:
-			single_node = node_stack[ key ].nodes[0]
+			single_node = node_stack[ key ].nodes[0].get_name()
 	total_node_count = node_count
 	# single_node is implicit by count but still good practice to declare in statement
-	if node_count == 1 and single_node:
+	if total_node_count == 1 and single_node:
 		auto_connect_start(single_node)
 
 # General method to create nodes (DIALOG | FEATURE | OPTION) - see: var node_stack
@@ -95,6 +96,7 @@ func get_new_node(type:String):
 			if node.position_offset.y > bounds.y:
 				bounds.y = node.position_offset.y
 	last_instanced_node_pos = bounds
+	add_child(new_node)
 	update_node_count()
 	return new_node
 
@@ -117,7 +119,6 @@ func remove_node(node:Node):
 	else:
 		push_error("Node type not found (" + type + ")")
 
-
 ################## Creating a new node ####################################
 func _on_new_node_pressed(open_save : bool = false):
 	
@@ -130,8 +131,7 @@ func _on_new_node_pressed(open_save : bool = false):
 		if last_instanced_node_pos == Vector2(0,0):
 			last_instanced_node_pos = $Start.position_offset
 		new_node.position_offset = last_instanced_node_pos + new_nodes_position_offset
-	add_child(new_node)
-	
+
 ################## Creating a new feature ####################################
 func _on_new_feature_pressed(open_save : bool = false):
 	spawn_sound.pitch_scale = random_number()
@@ -143,8 +143,7 @@ func _on_new_feature_pressed(open_save : bool = false):
 		if last_instanced_node_pos == Vector2(0,0):
 			last_instanced_node_pos = $Start.position_offset
 		new_feature.position_offset = last_instanced_node_pos + new_nodes_position_offset 
-	add_child(new_feature)
-	
+
 ################## Creating a new option ####################################
 func _on_new_option_pressed(open_save : bool = false):
 	spawn_sound.pitch_scale = random_number()
@@ -157,7 +156,6 @@ func _on_new_option_pressed(open_save : bool = false):
 		if last_instanced_node_pos == Vector2(0,0):
 			last_instanced_node_pos = $Start.position_offset
 		new_option.position_offset = last_instanced_node_pos + new_nodes_position_offset
-	add_child(new_option)
  
 ################## Ending the dialog ####################################
 func _on_end_node_pressed():
