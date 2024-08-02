@@ -65,9 +65,17 @@ func random_number():
 
 func update_node_count():
 	var node_count = 0
+	var single_node = null
 	for key in node_stack.keys():
-		node_count = node_count + len(node_stack[ key ].nodes)
+		var type_node_count = len(node_stack[ key ].nodes)
+		node_count = node_count + type_node_count
+		if type_node_count == 1:
+			single_node = node_stack[ key ].nodes[0]
 	total_node_count = node_count
+	# single_node is implicit by count but still good practice to declare in statement
+	if node_count == 1 and single_node:
+		auto_connect_start(single_node)
+
 
 func get_new_node(type:String):
 	var new_node = node_stack[type].res.instantiate()
@@ -119,9 +127,6 @@ func _on_new_node_pressed(open_save : bool = false):
 		if last_instanced_node_pos == Vector2(0,0):
 			last_instanced_node_pos = $Start.position_offset
 		new_node.position_offset = last_instanced_node_pos + new_nodes_position_offset
-			
-	# Connect first dialog node to START
-	auto_connect_start(new_node.name) 	
 	add_child(new_node)
 	
 ################## Creating a new feature ####################################
@@ -135,9 +140,6 @@ func _on_new_feature_pressed(open_save : bool = false):
 		if last_instanced_node_pos == Vector2(0,0):
 			last_instanced_node_pos = $Start.position_offset
 		new_feature.position_offset = last_instanced_node_pos + new_nodes_position_offset 
-	
-	# Connect first dialog node to START
-	auto_connect_start(new_feature.name)
 	add_child(new_feature)
 	
 ################## Creating a new option ####################################
@@ -152,9 +154,6 @@ func _on_new_option_pressed(open_save : bool = false):
 		if last_instanced_node_pos == Vector2(0,0):
 			last_instanced_node_pos = $Start.position_offset
 		new_option.position_offset = last_instanced_node_pos + new_nodes_position_offset
-			
-	# Connect first dialog node to START
-	auto_connect_start(new_option.name)
 	add_child(new_option)
  
 ################## Ending the dialog ####################################
@@ -391,5 +390,4 @@ func clear_all():
 	graph_cleared.emit()
 
 func auto_connect_start(node):
-	if total_node_count == 1:
-		connect_node("Start", 0, node, 0)
+	connect_node("Start", 0, node, 0)
