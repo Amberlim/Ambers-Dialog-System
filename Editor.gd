@@ -200,8 +200,7 @@ func _on_file_dialog_file_selected(path):
 		
 		# if type: node
 		if "DIALOG" in node["node title"]:
-			_on_new_node_pressed(true)
-			var current_node = get_node(node["node title"])
+			var current_node = get_new_node("DIALOG")
 
 			current_node.position_offset.x = node["offset_x"]
 			current_node.position_offset.y = node["offset_y"]
@@ -221,8 +220,7 @@ func _on_file_dialog_file_selected(path):
 			
 		# if type: feature	
 		elif "FEATURE" in node["node title"]:
-			_on_new_feature_pressed(true)
-			var current_node = get_node(node["node title"])
+			var current_node = get_new_node("FEATURE")
 			
 			current_node.position_offset.x = node["offset_x"]
 			current_node.position_offset.y = node["offset_y"]
@@ -272,7 +270,7 @@ func _on_file_dialog_file_selected(path):
 		# if type: option
 		elif "OPTION" in node["node title"]:
 			_on_new_option_pressed(true)
-			var current_node = get_node(node["node title"])
+			var current_node = get_new_node("OPTION")
 
 			current_node.position_offset.x = node["offset_x"]
 			current_node.position_offset.y = node["offset_y"]
