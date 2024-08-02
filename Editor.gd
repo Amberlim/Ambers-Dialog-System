@@ -62,7 +62,7 @@ func _input(event):
 func random_number():
 	return rng.randf_range(1, 1.5)
 
-
+# Called when a node is either created or removed
 func update_node_count():
 	var node_count = 0
 	var single_node = null
@@ -76,7 +76,7 @@ func update_node_count():
 	if node_count == 1 and single_node:
 		auto_connect_start(single_node)
 
-
+# General method to create nodes (DIALOG | FEATURE | OPTION) - see: var node_stack
 func get_new_node(type:String):
 	var new_node = node_stack[type].res.instantiate()
 	node_stack[ type ].last_index = node_stack[ type ].last_index + 1
@@ -85,6 +85,8 @@ func get_new_node(type:String):
 	new_node.name = new_name
 	new_node.node_data["node title"] =  new_name
 	node_stack[ type ].nodes.push_back(new_node)
+	
+	# Recreate bounds on node creation as they could be moved
 	var bounds:Vector2 = Vector2(0, 0)
 	for key in node_stack.keys():
 		for node in node_stack[ key ].nodes:
@@ -96,7 +98,8 @@ func get_new_node(type:String):
 	update_node_count()
 	return new_node
 
-
+# Called from child only, passes itself and lets GraphEdit handle the removal
+# For future reference _on_close_request(): get_parent().remove_node(self)
 func remove_node(node:Node):
 	var type = node.get_name().split("_")[0]
 	if node_stack.has(type):
