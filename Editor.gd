@@ -71,8 +71,15 @@ func get_new_node(type:String):
 	new_node.node_data["node title"] =  new_name
 	node_stack[ type ].nodes.push_back(new_node)
 	var node_count = 0
+	var bounds:Vector2 = Vector2(0, 0)
 	for key in node_stack.keys():
 		node_count = node_count + len(node_stack[ key ].nodes)
+		for node in node_stack[ key ].nodes:
+			if node.position_offset.x > bounds.x:
+				bounds.x = node.position_offset.x
+			if node.position_offset.y > bounds.y:
+				bounds.y = node.position_offset.y
+	last_instanced_node_pos = bounds
 	return new_node
 
 
@@ -103,10 +110,7 @@ func _on_new_node_pressed(open_save : bool = false):
 		new_node.position_offset = last_instanced_node_pos + new_nodes_position_offset
 			
 	# Connect first dialog node to START
-	auto_connect_start(new_node.name) 
-	
-	last_instanced_node_pos = new_node.position_offset
-	
+	auto_connect_start(new_node.name) 	
 	add_child(new_node)
 	
 ################## Creating a new feature ####################################
@@ -122,9 +126,8 @@ func _on_new_feature_pressed(open_save : bool = false):
 		new_feature.position_offset = last_instanced_node_pos + new_nodes_position_offset 
 	
 	# Connect first dialog node to START
-	auto_connect_start(new_feature.name) 
-		
-	last_instanced_node_pos = new_feature.position_offset
+	auto_connect_start(new_feature.name)
+	add_child(new_feature)
 	
 ################## Creating a new option ####################################
 func _on_new_option_pressed(open_save : bool = false):
@@ -140,10 +143,7 @@ func _on_new_option_pressed(open_save : bool = false):
 		new_option.position_offset = last_instanced_node_pos + new_nodes_position_offset
 			
 	# Connect first dialog node to START
-	auto_connect_start(new_option.name) 
-			
-	last_instanced_node_pos = new_option.position_offset
-	
+	auto_connect_start(new_option.name)
 	add_child(new_option)
  
 ################## Ending the dialog ####################################
