@@ -25,7 +25,12 @@ var node_stack:Dictionary = {
 signal graph_cleared
 signal node_closed
 
-
+var selected_file_path:String
+func _ready():
+	if get_node("CanvasLayer/OpenFileDialog").is_connected("file_selected", _on_file_dialog_file_selected):
+#		get_node("CanvasLayer/OpenFileDialog").disconnect("file_selected", _on_file_dialog_file_selected)
+		print("Signal: file_selected - This signal is only used to set the path")
+	get_node("CanvasLayer/OpenFileDialog").connect("confirmed", _on_file_dialog_load_file)
 
 ################## Shortcut Keys ####################################
 	
@@ -78,10 +83,13 @@ func update_node_count():
 		auto_connect_start(single_node)
 
 # General method to create nodes (DIALOG | FEATURE | OPTION) - see: var node_stack
-func get_new_node(type:String):
+# + accepts a name as passive, generates a new name if empty
+func get_new_node(type:String, _node_name:String = ""):
 	var new_node = node_stack[type].res.instantiate()
 	node_stack[ type ].last_index = node_stack[ type ].last_index + 1
 	var new_name = type + "_" +str(node_stack[ type ].last_index)
+	if _node_name != "":
+		new_name = _node_name
 	new_node.title =  new_name
 	new_node.name = new_name
 	new_node.node_data["node title"] =  new_name
@@ -178,29 +186,34 @@ func _on_end_node_pressed():
 ################## Open file ####################################
 	
 func _on_file_dialog_file_selected(path):
+	print(path)
+	selected_file_path = path
+
+func _on_file_dialog_load_file():
+	# Make sure the listener runs before the emitter
+	_on_file_dialog_load_file_async() # Start the async function waiting for the signal
+	clear_all() # Run the function that emits the signal expected
 	
-	# Clear all existing nodes
-	clear_all()
+func _on_file_dialog_load_file_async():
 	await self.graph_cleared
-	
 	# Hide Option Panel
 	options_panel.hide()
 	
 	# Parse JSON to *dialog* dictionary in scene tree
-	var file = FileAccess.open(path,FileAccess.READ)
+	var file = FileAccess.open(selected_file_path,FileAccess.READ)
 	var dialog = JSON.parse_string(file.get_as_text())
 	
 	# Change window title
-	get_window().title = path.get_file().replace(".json", "")
+	get_window().title = selected_file_path.get_file().replace(".json", "")
 	
 	# Assign nodes into/with correct positions and values
 	# Nodes (incl. start & end nodes)
-	for node in dialog:
-		node = dialog[node]
+	for node_name in dialog:
+		var node = dialog[node_name]
 		
 		# if type: node
 		if "DIALOG" in node["node title"]:
-			var current_node = get_new_node("DIALOG")
+			var current_node = get_new_node("DIALOG", node_name)
 
 			current_node.position_offset.x = node["offset_x"]
 			current_node.position_offset.y = node["offset_y"]
@@ -220,7 +233,7 @@ func _on_file_dialog_file_selected(path):
 			
 		# if type: feature	
 		elif "FEATURE" in node["node title"]:
-			var current_node = get_new_node("FEATURE")
+			var current_node = get_new_node("FEATURE", node_name)
 			
 			current_node.position_offset.x = node["offset_x"]
 			current_node.position_offset.y = node["offset_y"]
@@ -237,7 +250,7 @@ func _on_file_dialog_file_selected(path):
 					var variable_node_name = "Variable" + str(current_variable_count)
 					var variable_node = variables_group.get_node(variable_node_name)
 					variable_node.text.text = node["variables"].keys()[current_variable_count - 1]
-					variable_node.check_button.button_pressed = 	node["variables"].values()[current_variable_count - 1]
+					variable_node.check_button.button_pressed = node["variables"].values()[current_variable_count - 1]
 			
 			# signals
 			if not node["signals"].is_empty():
@@ -270,7 +283,7 @@ func _on_file_dialog_file_selected(path):
 		# if type: option
 		elif "OPTION" in node["node title"]:
 			_on_new_option_pressed(true)
-			var current_node = get_new_node("OPTION")
+			var current_node = get_new_node("OPTION", node_name)
 
 			current_node.position_offset.x = node["offset_x"]
 			current_node.position_offset.y = node["offset_y"]
