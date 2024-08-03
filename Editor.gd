@@ -9,21 +9,28 @@ var rng = RandomNumberGenerator.new()
 
 # Keep Count
 var total_node_count = 0
-var dialog_count = 0
-var feature_count = 0
-var option_count = 0
 var end_count = 0
 var new_nodes_position_offset = Vector2(450,0)
 
 
 # Data
 var dialog = {}
+var node_stack:Dictionary = {
+	"DIALOG":  { "nodes": [], "last_index": 0, "res": load("res://GraphNode.tscn") },
+	"FEATURE": { "nodes": [], "last_index": 0, "res": load("res://Feature.tscn") },
+	"OPTION":  { "nodes": [], "last_index": 0, "res": load("res://Option.tscn") }
+}
 
 # Signals
 signal graph_cleared
 signal node_closed
 
-
+var selected_file_path:String
+func _ready():
+	if get_node("CanvasLayer/OpenFileDialog").is_connected("file_selected", _on_file_dialog_file_selected):
+#		get_node("CanvasLayer/OpenFileDialog").disconnect("file_selected", _on_file_dialog_file_selected)
+		print("Signal: file_selected - This signal is only used to set the path")
+	get_node("CanvasLayer/OpenFileDialog").connect("confirmed", _on_file_dialog_load_file)
 
 ################## Shortcut Keys ####################################
 	
@@ -59,86 +66,114 @@ func _input(event):
 
 func random_number():
 	return rng.randf_range(1, 1.5)
+
+################## Life cycle methods  ####################################
+# Called when a node is either created or removed
+func update_node_count():
+	var node_count = 0
+	var single_node = null
+
+	for key in node_stack.keys():
+		var type_node_count = len(node_stack[ key ].nodes)
+		node_count = node_count + type_node_count
+
+		if type_node_count == 1:
+			single_node = node_stack[ key ].nodes[0].get_name()
+
+	total_node_count = node_count
+
+	# single_node is implicit by count but still good practice to declare in statement
+	if total_node_count == 1 and single_node:
+		auto_connect_start(single_node)
+
+# General method to create nodes (DIALOG | FEATURE | OPTION) - see: var node_stack
+# + accepts a name as passive, generates a new name if empty
+func get_new_node(type:String, _node_name:String = ""):
+	var new_node = node_stack[type].res.instantiate()
+	node_stack[ type ].last_index = node_stack[ type ].last_index + 1
+
+	var new_name = type + "_" +str(node_stack[ type ].last_index)
+	if _node_name != "":
+		new_name = _node_name
+
+	new_node.title =  new_name
+	new_node.name = new_name
+	new_node.node_data["node title"] =  new_name
+	node_stack[ type ].nodes.push_back(new_node)
 	
+	# Recreate bounds on node creation as they could be moved
+	var bounds:Vector2 = Vector2(0, 0)
+	for key in node_stack.keys():
+		for node in node_stack[ key ].nodes:
+			if node.position_offset.x > bounds.x:
+				bounds.x = node.position_offset.x
+			if node.position_offset.y > bounds.y:
+				bounds.y = node.position_offset.y
+	last_instanced_node_pos = bounds
+
+	add_child(new_node)
+	update_node_count()
+
+	return new_node
+
+# Called from child only, passes itself and lets GraphEdit handle the removal
+# For future reference _on_close_request(): get_parent().remove_node(self)
+func remove_node(node:Node):
+	var type = node.get_name().split("_")[0]
+	if node_stack.has(type):
+		var index = node_stack[ type ].nodes.find(node)
+
+		if index == -1:
+			push_error("Node not found on stack (" + str(node.get_path()) + ")")
+		else:
+			node_stack[ type ].nodes.remove_at(index)
+
+			var node_name = node.get_name()
+			for connection in get_connection_list():
+				if connection.from == node_name or connection.to == node_name:
+					disconnect_node(connection.from, connection.from_port, connection.to, connection.to_port)
+			node.queue_free()
+			update_node_count()
+	else:
+		push_error("Node type not found (" + type + ")")
+
 ################## Creating a new node ####################################
 func _on_new_node_pressed(open_save : bool = false):
 	
 	spawn_sound.pitch_scale = random_number()
 	spawn_sound.play()
 
-	update_node_count(1, 1)
-	
-	var new_node = load("res://GraphNode.tscn")
-	new_node = new_node.instantiate()
-	
-	new_node.title = "DIALOG_" + str(dialog_count)
-	new_node.name = "DIALOG_" + str(dialog_count)
-	new_node.node_data["node title"] =  "DIALOG_" + str(dialog_count)
-	
-		
+	var new_node = get_new_node("DIALOG")
+
 	if not open_save:
 		if last_instanced_node_pos == Vector2(0,0):
 			last_instanced_node_pos = $Start.position_offset
 		new_node.position_offset = last_instanced_node_pos + new_nodes_position_offset
-			
-	# Connect first dialog node to START
-	auto_connect_start(new_node.name) 
-	
-	last_instanced_node_pos = new_node.position_offset
-	
-	add_child(new_node)
-	
+
 ################## Creating a new feature ####################################
 func _on_new_feature_pressed(open_save : bool = false):
 	spawn_sound.pitch_scale = random_number()
 	spawn_sound.play()
 	
-	update_node_count(1, 0, 1)
-	
-	var new_feature = load("res://Feature.tscn")
-	new_feature = new_feature.instantiate()
-	add_child(new_feature)
-	
-	new_feature.title = "FEATURE_" + str(feature_count)
-	new_feature.name = "FEATURE_" + str(feature_count)
-	new_feature.node_data["node title"] = new_feature.title
+	var new_feature = get_new_node("FEATURE")
 	
 	if not open_save:
 		if last_instanced_node_pos == Vector2(0,0):
 			last_instanced_node_pos = $Start.position_offset
 		new_feature.position_offset = last_instanced_node_pos + new_nodes_position_offset 
-	
-	# Connect first dialog node to START
-	auto_connect_start(new_feature.name) 
-		
-	last_instanced_node_pos = new_feature.position_offset
-	
+
 ################## Creating a new option ####################################
 func _on_new_option_pressed(open_save : bool = false):
 	spawn_sound.pitch_scale = random_number()
 	spawn_sound.play()
 	
-	update_node_count(1,0,0,1)
-	
-	var new_option = load("res://Option.tscn")
-	new_option = new_option.instantiate()
-	
-	new_option.title = "OPTION_" + str(option_count)
-	new_option.name = "OPTION_" + str(option_count)
-	new_option.node_data["node title"] = new_option.name
+	var new_option = get_new_node("OPTION")
 
 	
 	if not open_save:
 		if last_instanced_node_pos == Vector2(0,0):
 			last_instanced_node_pos = $Start.position_offset
 		new_option.position_offset = last_instanced_node_pos + new_nodes_position_offset
-			
-	# Connect first dialog node to START
-	auto_connect_start(new_option.name) 
-			
-	last_instanced_node_pos = new_option.position_offset
-	
-	add_child(new_option)
  
 ################## Ending the dialog ####################################
 func _on_end_node_pressed():
@@ -161,30 +196,33 @@ func _on_end_node_pressed():
 ################## Open file ####################################
 	
 func _on_file_dialog_file_selected(path):
+	selected_file_path = path
+
+func _on_file_dialog_load_file():
+	# Change window title
+	get_window().title = selected_file_path.get_file().replace(".json", "")
+	# Make sure the listener runs before the emitter
+	_on_file_dialog_load_file_async() # Start the async function waiting for the signal
+	clear_all() # Run the function that emits the signal expected
 	
-	# Clear all existing nodes
-	clear_all()
+func _on_file_dialog_load_file_async():
 	await self.graph_cleared
-	
 	# Hide Option Panel
 	options_panel.hide()
 	
 	# Parse JSON to *dialog* dictionary in scene tree
-	var file = FileAccess.open(path,FileAccess.READ)
+	var file = FileAccess.open(selected_file_path,FileAccess.READ)
 	var dialog = JSON.parse_string(file.get_as_text())
 	
-	# Change window title
-	get_window().title = path.get_file().replace(".json", "")
 	
 	# Assign nodes into/with correct positions and values
 	# Nodes (incl. start & end nodes)
-	for node in dialog:
-		node = dialog[node]
+	for node_name in dialog:
+		var node = dialog[node_name]
 		
 		# if type: node
 		if "DIALOG" in node["node title"]:
-			_on_new_node_pressed(true)
-			var current_node = get_node(node["node title"])
+			var current_node = get_new_node("DIALOG", node_name)
 
 			current_node.position_offset.x = node["offset_x"]
 			current_node.position_offset.y = node["offset_y"]
@@ -204,8 +242,7 @@ func _on_file_dialog_file_selected(path):
 			
 		# if type: feature	
 		elif "FEATURE" in node["node title"]:
-			_on_new_feature_pressed(true)
-			var current_node = get_node(node["node title"])
+			var current_node = get_new_node("FEATURE", node_name)
 			
 			current_node.position_offset.x = node["offset_x"]
 			current_node.position_offset.y = node["offset_y"]
@@ -222,7 +259,7 @@ func _on_file_dialog_file_selected(path):
 					var variable_node_name = "Variable" + str(current_variable_count)
 					var variable_node = variables_group.get_node(variable_node_name)
 					variable_node.text.text = node["variables"].keys()[current_variable_count - 1]
-					variable_node.check_button.button_pressed = 	node["variables"].values()[current_variable_count - 1]
+					variable_node.check_button.button_pressed = node["variables"].values()[current_variable_count - 1]
 			
 			# signals
 			if not node["signals"].is_empty():
@@ -255,7 +292,7 @@ func _on_file_dialog_file_selected(path):
 		# if type: option
 		elif "OPTION" in node["node title"]:
 			_on_new_option_pressed(true)
-			var current_node = get_node(node["node title"])
+			var current_node = get_new_node("OPTION", node_name)
 
 			current_node.position_offset.x = node["offset_x"]
 			current_node.position_offset.y = node["offset_y"]
@@ -366,33 +403,14 @@ func _on_disconnection_request(from_node, from_port, to_node, to_port):
 
 func clear_all():
 	clear_connections()
-	for node in get_tree().get_nodes_in_group("nodes"):
-		node.queue_free()
-	clear_node_count()
+	for type in node_stack.keys():
+		for node in node_stack[type].nodes:
+			node.queue_free()
+		node_stack[ type ].last_index = 0
+		node_stack[type].nodes = []
+	await get_tree().create_timer(0.05).timeout
+	total_node_count = 0
 	graph_cleared.emit()
-	
-func auto_connect_start(node):
-	if total_node_count == 1:
-		connect_node("Start", 0, node, 0)
-		
-################## Tracking Node Count ####################################
-func update_node_count(total = 0, dialog = 0, feature = 0, option = 0):
-	total_node_count += total
-	dialog_count += dialog
-	feature_count += feature
-	option_count += option
-	print("dialog count: " + str(dialog_count))
-	
-func clear_node_count():
-	total_node_count += 0
-	dialog_count += 0
-	feature_count += 0
-	option_count += 0
 
-func update_node_name(prefix, number):
-	var node = get_node(prefix + str(number))
-	var new_number = number - 1
-	var new_name = prefix + str(new_number)
-	node.name =  prefix + str(new_number)
-	node.title =  prefix + str(new_number)
-	node.node_data["node title"] =  prefix + str(new_number)
+func auto_connect_start(node):
+	connect_node("Start", 0, node, 0)
