@@ -26,6 +26,8 @@ signal graph_cleared
 signal node_closed
 
 var selected_file_path:String
+var can_create_new_node:bool = true
+
 func _ready():
 	if get_node("CanvasLayer/OpenFileDialog").is_connected("file_selected", _on_file_dialog_file_selected):
 #		get_node("CanvasLayer/OpenFileDialog").disconnect("file_selected", _on_file_dialog_file_selected)
@@ -35,9 +37,12 @@ func _ready():
 ################## Shortcut Keys ####################################
 	
 func _input(event):
-	if Input.is_action_pressed("New Node"):
+	if Input.is_action_just_pressed("New Node") and can_create_new_node:
+		can_create_new_node = false
 		last_instanced_node_pos = get_global_mouse_position() - new_nodes_position_offset
 		_on_new_node_pressed()
+		await get_tree().create_timer(0.1).timeout
+		can_create_new_node = true
 	elif Input.is_action_pressed("Return to Start"):
 		scroll_offset = Vector2(-200, -40)
 	elif Input.is_action_pressed("Go to End"):
