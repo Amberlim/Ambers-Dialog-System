@@ -1,12 +1,13 @@
 [gd_scene load_steps=6 format=3 uid="uid://du8buwy48dvor"]
 
-[ext_resource type="FontFile" uid="uid://cr7irh45ojvhq" path="res://Assets/Fonts/RobotoMono-VariableFont_wght.ttf" id="1_mh05q"]
+[ext_resource type="FontFile" uid="uid://dbga3hs7ko0df" path="res://Assets/Fonts/RobotoMono-VariableFont_wght.ttf" id="1_mh05q"]
 [ext_resource type="Script" path="res://CodeEdit.gd" id="2_37jka"]
-[ext_resource type="AudioStream" uid="uid://bpuuj0excj3p7" path="res://Assets/Sound/Type2.wav" id="3_voskr"]
+[ext_resource type="AudioStream" uid="uid://bugnbjxbttg72" path="res://Assets/Sound/Type2.wav" id="3_voskr"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h0v5b"]
 
 [sub_resource type="CodeHighlighter" id="CodeHighlighter_cx3dy"]
+resource_local_to_scene = true
 number_color = Color(1, 1, 1, 1)
 symbol_color = Color(1, 1, 1, 1)
 function_color = Color(1, 1, 1, 1)
@@ -35,10 +36,10 @@ theme_override_font_sizes/font_size = 15
 theme_override_styles/focus = SubResource("StyleBoxEmpty_h0v5b")
 text = "bla bla"
 wrap_mode = 1
-draw_tabs = true
-syntax_highlighter = SubResource("CodeHighlighter_cx3dy")
 scroll_smooth = true
 caret_blink = true
+syntax_highlighter = SubResource("CodeHighlighter_cx3dy")
+draw_tabs = true
 line_folding = true
 gutters_draw_line_numbers = true
 indent_automatic_prefixes = Array[String]([":", "{", "[", "<", ">"])

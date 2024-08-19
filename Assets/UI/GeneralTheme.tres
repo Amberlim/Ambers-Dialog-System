@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=12 format=3 uid="uid://thbfepb48rke"]
 
-[ext_resource type="FontFile" uid="uid://cr7irh45ojvhq" path="res://Assets/Fonts/RobotoMono-VariableFont_wght.ttf" id="2_wg7ae"]
+[ext_resource type="FontFile" uid="uid://dbga3hs7ko0df" path="res://Assets/Fonts/RobotoMono-VariableFont_wght.ttf" id="2_wg7ae"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6u15c"]
 content_margin_top = 4.0
