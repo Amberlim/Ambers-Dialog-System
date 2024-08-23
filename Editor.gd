@@ -2,6 +2,7 @@ extends GraphEdit
 
 # Get nodes
 var last_instanced_node_pos = Vector2(0,0)
+var last_mouse_pos = Vector2(0,0)
 @onready var saved_notification = $Tool/SavedNotification
 @onready var spawn_sound = $SpawnSound
 var rng = RandomNumberGenerator.new()
@@ -35,8 +36,10 @@ func _ready():
 ################## Shortcut Keys ####################################
 	
 func _input(event):
+	# Get actaul position = (mouse position in window + moved canvas position) scaled 
+	var mouse_position_in_canvas = (get_global_mouse_position() + scroll_offset)/zoom
 	if Input.is_action_just_released("New Node"):
-		last_instanced_node_pos = get_global_mouse_position() - new_nodes_position_offset
+		last_mouse_pos = mouse_position_in_canvas - new_nodes_position_offset
 		_on_new_node_pressed()
 	elif Input.is_action_just_released("Return to Start"):
 		scroll_offset = Vector2(-200, -40)
@@ -51,7 +54,7 @@ func _input(event):
 	elif Input.is_action_just_released("New File"):
 		_on_new_pressed()
 	elif Input.is_action_just_released("New Feature"):
-		last_instanced_node_pos = get_global_mouse_position() - new_nodes_position_offset
+		last_mouse_pos = mouse_position_in_canvas - new_nodes_position_offset
 		_on_new_feature_pressed()
 	elif Input.is_action_just_released("Open"):
 		$CanvasLayer/OpenFileDialog.show()
@@ -100,16 +103,19 @@ func get_new_node(type:String, _node_name:String = ""):
 	new_node.name = new_name
 	new_node.node_data["node title"] =  new_name
 	node_stack[ type ].nodes.push_back(new_node)
-	
-	# Recreate bounds on node creation as they could be moved
-	var bounds:Vector2 = Vector2(0, 0)
-	for key in node_stack.keys():
-		for node in node_stack[ key ].nodes:
-			if node.position_offset.x > bounds.x:
-				bounds.x = node.position_offset.x
-			if node.position_offset.y > bounds.y:
-				bounds.y = node.position_offset.y
-	last_instanced_node_pos = bounds
+
+	if last_mouse_pos != Vector2(0,0): # Set mouse position as origin if event was a click
+		last_instanced_node_pos = last_mouse_pos
+		last_mouse_pos = Vector2(0,0) # Unset mouse position
+	else: # Recreate bounds if the event comes from a button
+		var bounds:Vector2 = Vector2(0, 0)
+		for key in node_stack.keys():
+			for node in node_stack[ key ].nodes:
+				if node.position_offset.x > bounds.x:
+					bounds.x = node.position_offset.x
+				if node.position_offset.y > bounds.y:
+					bounds.y = node.position_offset.y
+		last_instanced_node_pos = bounds
 
 	add_child(new_node)
 	update_node_count()
