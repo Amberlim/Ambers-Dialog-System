@@ -2,6 +2,7 @@ extends GraphEdit
 
 # Get nodes
 var last_instanced_node_pos = Vector2(0,0)
+var last_mouse_pos = Vector2(0,0)
 @onready var saved_notification = $Tool/SavedNotification
 @onready var spawn_sound = $SpawnSound
 var rng = RandomNumberGenerator.new()
@@ -35,12 +36,14 @@ func _ready():
 ################## Shortcut Keys ####################################
 	
 func _input(event):
-	if Input.is_action_pressed("New Node"):
-		last_instanced_node_pos = get_global_mouse_position() - new_nodes_position_offset
+	# Get actaul position = (mouse position in window + moved canvas position) scaled 
+	var mouse_position_in_canvas = (get_global_mouse_position() + scroll_offset)/zoom
+	if Input.is_action_just_released("New Node"):
+		last_mouse_pos = mouse_position_in_canvas - new_nodes_position_offset
 		_on_new_node_pressed()
-	elif Input.is_action_pressed("Return to Start"):
+	elif Input.is_action_just_released("Return to Start"):
 		scroll_offset = Vector2(-200, -40)
-	elif Input.is_action_pressed("Go to End"):
+	elif Input.is_action_just_released("Go to End"):
 		if has_node("End"):
 			var end = $End
 			var pos_x = end.position.x
@@ -48,14 +51,14 @@ func _input(event):
 			var pos_y = end.position.y
 			pos_y = pos_y * -0.02
 			scroll_offset = Vector2(pos_x, pos_y)
-	elif Input.is_action_pressed("New File"):
+	elif Input.is_action_just_released("New File"):
 		_on_new_pressed()
-	elif Input.is_action_just_pressed("New Feature"):
-		last_instanced_node_pos = get_global_mouse_position() - new_nodes_position_offset
+	elif Input.is_action_just_released("New Feature"):
+		last_mouse_pos = mouse_position_in_canvas - new_nodes_position_offset
 		_on_new_feature_pressed()
-	elif Input.is_action_pressed("Open"):
+	elif Input.is_action_just_released("Open"):
 		$CanvasLayer/OpenFileDialog.show()
-	elif Input.is_action_just_pressed("Save"):
+	elif Input.is_action_just_released("Save"):
 		if Global.if_file_exists(get_window().title) == false:
 			_on_save_as_pressed()
 		else:
@@ -100,16 +103,19 @@ func get_new_node(type:String, _node_name:String = ""):
 	new_node.name = new_name
 	new_node.node_data["node title"] =  new_name
 	node_stack[ type ].nodes.push_back(new_node)
-	
-	# Recreate bounds on node creation as they could be moved
-	var bounds:Vector2 = Vector2(0, 0)
-	for key in node_stack.keys():
-		for node in node_stack[ key ].nodes:
-			if node.position_offset.x > bounds.x:
-				bounds.x = node.position_offset.x
-			if node.position_offset.y > bounds.y:
-				bounds.y = node.position_offset.y
-	last_instanced_node_pos = bounds
+
+	if last_mouse_pos != Vector2(0,0): # Set mouse position as origin if event was a click
+		last_instanced_node_pos = last_mouse_pos
+		last_mouse_pos = Vector2(0,0) # Unset mouse position
+	else: # Recreate bounds if the event comes from a button
+		var bounds:Vector2 = Vector2(0, 0)
+		for key in node_stack.keys():
+			for node in node_stack[ key ].nodes:
+				if node.position_offset.x > bounds.x:
+					bounds.x = node.position_offset.x
+				if node.position_offset.y > bounds.y:
+					bounds.y = node.position_offset.y
+		last_instanced_node_pos = bounds
 
 	add_child(new_node)
 	update_node_count()
