@@ -35,12 +35,12 @@ func _ready():
 ################## Shortcut Keys ####################################
 	
 func _input(event):
-	if Input.is_action_pressed("New Node"):
+	if Input.is_action_just_released("New Node"):
 		last_instanced_node_pos = get_global_mouse_position() - new_nodes_position_offset
 		_on_new_node_pressed()
-	elif Input.is_action_pressed("Return to Start"):
+	elif Input.is_action_just_released("Return to Start"):
 		scroll_offset = Vector2(-200, -40)
-	elif Input.is_action_pressed("Go to End"):
+	elif Input.is_action_just_released("Go to End"):
 		if has_node("End"):
 			var end = $End
 			var pos_x = end.position.x
@@ -48,14 +48,14 @@ func _input(event):
 			var pos_y = end.position.y
 			pos_y = pos_y * -0.02
 			scroll_offset = Vector2(pos_x, pos_y)
-	elif Input.is_action_pressed("New File"):
+	elif Input.is_action_just_released("New File"):
 		_on_new_pressed()
-	elif Input.is_action_just_pressed("New Feature"):
+	elif Input.is_action_just_released("New Feature"):
 		last_instanced_node_pos = get_global_mouse_position() - new_nodes_position_offset
 		_on_new_feature_pressed()
-	elif Input.is_action_pressed("Open"):
+	elif Input.is_action_just_released("Open"):
 		$CanvasLayer/OpenFileDialog.show()
-	elif Input.is_action_just_pressed("Save"):
+	elif Input.is_action_just_released("Save"):
 		if Global.if_file_exists(get_window().title) == false:
 			_on_save_as_pressed()
 		else:
