@@ -223,12 +223,25 @@ func _on_file_dialog_load_file_async():
 	
 	# Assign nodes into/with correct positions and values
 	# Nodes (incl. start & end nodes)
+	
+	# Create nodes before connecting them to avoid lost references
+	for node_name in dialog:
+		var type = node_name.split("_")[0]
+		if type and node_stack.has(type):
+			var new_node = get_new_node(type, node_name)
+			var node_data_keys = dialog[ node_name ].keys()
+			# reassign node"s data
+			for key in node_data_keys:
+				new_node.node_data[ key ] = dialog[ node_name ][ key ]
+			# pass to object for next loop quick reference
+			dialog[ node_name ].res = new_node
+
 	for node_name in dialog:
 		var node = dialog[node_name]
 		
 		# if type: node
 		if "DIALOG" in node["node title"]:
-			var current_node = get_new_node("DIALOG", node_name)
+			var current_node = dialog[ node_name ].res
 
 			current_node.position_offset.x = node["offset_x"]
 			current_node.position_offset.y = node["offset_y"]
@@ -248,7 +261,7 @@ func _on_file_dialog_load_file_async():
 			
 		# if type: feature	
 		elif "FEATURE" in node["node title"]:
-			var current_node = get_new_node("FEATURE", node_name)
+			var current_node = dialog[ node_name ].res
 			
 			current_node.position_offset.x = node["offset_x"]
 			current_node.position_offset.y = node["offset_y"]
@@ -298,7 +311,7 @@ func _on_file_dialog_load_file_async():
 		# if type: option
 		elif "OPTION" in node["node title"]:
 			_on_new_option_pressed(true)
-			var current_node = get_new_node("OPTION", node_name)
+			var current_node = dialog[ node_name ].res
 
 			current_node.position_offset.x = node["offset_x"]
 			current_node.position_offset.y = node["offset_y"]
