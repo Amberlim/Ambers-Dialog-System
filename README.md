@@ -21,8 +21,6 @@
 
 <h3>🐛 Existing Bugs</h3>
 <ul>
-  <li>Deleting consecutively nodes can confuse the editor and cause problems when you want to open the file next time.</li>
-  <li>Syntax colours sometimes mess up.</li>
   <li>Sometimes connections doesn't link properly (especially when opening old files).</li>
   <li>Crashes when creating a new file/opening an old file when another file is already open.</li>
 </ul>
