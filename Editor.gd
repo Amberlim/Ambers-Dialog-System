@@ -95,7 +95,7 @@ func get_new_node(type:String, _node_name:String = ""):
 	var new_node = node_stack[type].res.instantiate()
 	node_stack[ type ].last_index = node_stack[ type ].last_index + 1
 
-	var new_name = type + "_" +str(node_stack[ type ].last_index)
+	var new_name = type + "_" +str(node_stack[ type ].last_index).lpad(10,"0")
 	if _node_name != "":
 		new_name = _node_name
 
